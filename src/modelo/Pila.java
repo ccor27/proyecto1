@@ -2,7 +2,7 @@ package modelo;
 
 public class Pila {
 
-	private NodoTarea inicio;
+	private Nodo<Tarea> inicio;
 	private int tamanio=0;
 	
 	public Pila(){
@@ -10,7 +10,7 @@ public class Pila {
 	}
 	
 	public void insertar(Tarea tarea){
-		NodoTarea nodo = new NodoTarea(tarea);
+		Nodo<Tarea>  nodo = new Nodo<Tarea> (tarea);
 		if(inicio == null){
 			inicio = nodo;
 		}else{
@@ -22,9 +22,9 @@ public class Pila {
 	}
 	
 	public Tarea sacarTarea(){
-		NodoTarea aux = inicio;
+		Nodo<Tarea>  aux = inicio;
 		inicio = inicio.getSiguiente();
-		return aux.getTarea();
+		return aux.getValorNodo();
 	}
 	
 	public int getTamanio(){

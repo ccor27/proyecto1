@@ -1,7 +1,6 @@
 package services;
 
 import modelo.Nodo;
-import modelo.NodoTarea;
 import modelo.Tarea;
 
 public interface IColaService {
