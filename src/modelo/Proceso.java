@@ -5,7 +5,7 @@ public class Proceso {
 	private int id;
 	private String nombre;
 	private ListaActividad conjuntoActividades;
-	private int tiempo;
+	private double tiempo;
 	
 	public Proceso(){
 		
@@ -38,12 +38,18 @@ public class Proceso {
 	public void setConjuntoActividades(ListaActividad conjuntoActividades) {
 		this.conjuntoActividades = conjuntoActividades;
 	}
-	public int getTiempo() {
+	public double getTiempo() {
+		tiempo = conjuntoActividades.tiempoTodasActividades();
 		return tiempo;
 	}
-	public void setTiempo(int tiempo) {
+	public void setTiempo(double tiempo) {
 		this.tiempo = tiempo;
 	}
+	@Override
+	public String toString() {
+		return "Proceso "+nombre+"  timepo estimado: "+getTiempo()+" \n "+ conjuntoActividades.mostrarActividades();
+	}
+	
 	
 	
 }

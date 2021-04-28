@@ -31,7 +31,7 @@ public class Tarea {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public boolean isEsObligatorio() {
+	public boolean getEsObligatorio() {
 		return esObligatorio;
 	}
 	public void setEsObligatorio(boolean esObligatorio) {
@@ -49,6 +49,11 @@ public class Tarea {
 	public void setTiempoMin(double tiempoMin) {
 		this.tiempoMin = tiempoMin;
 	}
+	@Override
+	public String toString() {
+		return "     Tarea: "+"\n"+"        "+descripcion+"\n"+"        "+tiempo+"\n"+"  "+"\n";
+	}
+	
 	
 
 }

@@ -6,7 +6,7 @@ public class Actividad {
 	private String descripcion;
 	private boolean esObligatorio;
 	private ColaTarea conjuntoTareas = new ColaTarea();
-	private int tiempo;
+	private double tiempo;
 	
 	public Actividad(){
 		
@@ -45,14 +45,20 @@ public class Actividad {
 	public void setConjuntoTareas(ColaTarea conjuntoTareas) {
 		this.conjuntoTareas = conjuntoTareas;
 	}
-	public int getTiempo() {
+	public double getTiempo() {
+		tiempo = conjuntoTareas.obtenerTiempoTotalCola();
 		return tiempo;
 	}
-	public void setTiempo(int tiempo) {
+	public void setTiempo(double tiempo) {
 		this.tiempo = tiempo;
 	}
     public void mostrarTareas(){
     	conjuntoTareas.mostrarTareas();
     }
+	@Override
+	public String toString() {
+		return "Actividad:   "+nombre+"  "+tiempo+"\n"+"   "+conjuntoTareas.mostrarTareas()+"\n";
+	}
 	
+    
 }
