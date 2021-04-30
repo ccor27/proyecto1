@@ -264,5 +264,33 @@ public class ListaActividad implements IListaActividadService{
 		return datos;
 	}
 	
+	public void cambiarActividadesConTareas(String nombreActividad, Actividad actividad){
+		
+		NodoDoble<Actividad> actividadModificar = buscarNodoActividad(nombreActividad);
+		if(actividadModificar!=null){
+			
+			if(actividad!=null){
+				actividadModificar.setValorNodo(actividad);	
+			}else{
+				System.out.println("la actividad a intercambiar no existe");	
+			}
+		}else{
+			System.out.println("la actividad a intercambiar no existe");
+		}
+		
+	}
+	
+	public void cambiarActividadesSinTareas(String nombreActividad1, String nombreActividad2){
+		
+		NodoDoble<Actividad> actividadModificar = buscarNodoActividad(nombreActividad1);
+		if(actividadModificar!=null){
+			actividadModificar.getValorNodo().setNombre(nombreActividad2);	
+		}else{
+			System.out.println("la actividad a intercambiar no existe");
+		}
+		
+		
+	}
+	
 
 }
