@@ -39,6 +39,9 @@ public class Actividad {
 	public void setEsObligatorio(boolean esObligatorio) {
 		this.esObligatorio = esObligatorio;
 	}
+	public boolean getEsObligatorio(){
+		return this.esObligatorio;
+	}
 	public ColaTarea getConjuntoTareas() {
 		return conjuntoTareas;
 	}

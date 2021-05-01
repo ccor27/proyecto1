@@ -95,8 +95,8 @@ public class ListaProceso {
 					p1.getConjuntoActividades().cambiarActividadesConTareas(nombreActividad1, act2);
 					p2.getConjuntoActividades().cambiarActividadesConTareas(nombreActividad2, act1);
 				}else{
-					p1.getConjuntoActividades().cambiarActividadesSinTareas(nombreActividad1, nombreActividad2);
-					p2.getConjuntoActividades().cambiarActividadesSinTareas(nombreActividad2, nombreActividad1);
+					p1.getConjuntoActividades().cambiarActividadesSinTareas(nombreActividad1, act2);
+					p2.getConjuntoActividades().cambiarActividadesSinTareas(nombreActividad2, act1);
 				}
 			}
 		}

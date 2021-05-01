@@ -104,7 +104,7 @@ public class ListaActividad implements IListaActividadService{
 	 * @param nombre
 	 * @return
 	 */
-	private NodoDoble<Actividad>  buscarNodoActividad(String nombre){
+	public NodoDoble<Actividad>  buscarNodoActividad(String nombre){
 		NodoDoble<Actividad> nodo = cabeza;
 		NodoDoble<Actividad> encontrado = null;
 		
@@ -280,11 +280,19 @@ public class ListaActividad implements IListaActividadService{
 		
 	}
 	
-	public void cambiarActividadesSinTareas(String nombreActividad1, String nombreActividad2){
+	public void cambiarActividadesSinTareas(String nombreActividad1, Actividad actividad2){
 		
 		NodoDoble<Actividad> actividadModificar = buscarNodoActividad(nombreActividad1);
 		if(actividadModificar!=null){
-			actividadModificar.getValorNodo().setNombre(nombreActividad2);	
+				
+			if(actividad2!=null){
+			     actividadModificar.getValorNodo().setDescripcion(actividad2.getDescripcion());
+			     actividadModificar.getValorNodo().setNombre(actividad2.getNombre());
+			     actividadModificar.getValorNodo().setEsObligatorio(actividad2.getEsObligatorio());
+			}else{
+				System.out.println("la actividad a intercambiar no existe");	
+			}
+			
 		}else{
 			System.out.println("la actividad a intercambiar no existe");
 		}
