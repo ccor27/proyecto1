@@ -5,11 +5,16 @@ public class ListaProceso {
 	private Nodo<Proceso> inicio;
 	private int longitud;
 	private int tiempoProceso;
+	private String nombre;
 	
-	public ListaProceso(){
+	public ListaProceso(String nombre){
+		this.nombre = nombre;
 		inicio=null;
 		this.longitud=0;
 		this.tiempoProceso=0;
+	}
+	public ListaProceso(){
+		
 	}
 	
 	public void insertarProceso(Proceso proceso){
@@ -57,6 +62,7 @@ public class ListaProceso {
 		return proceso;
 	}
 	
+	
 	public void mostrarProcesos(){
 		String datos ="";
 		Nodo<Proceso> puntero = inicio;
@@ -67,6 +73,9 @@ public class ListaProceso {
 		System.out.println(datos);
 	}
 	
+	public Nodo<Proceso> getInicio(){
+		return this.inicio;
+	}
 	public int obtenerCantidadProcesos(){
 		return longitud;
 	}
