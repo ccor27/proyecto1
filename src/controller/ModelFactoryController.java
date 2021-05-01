@@ -29,7 +29,7 @@ public class ModelFactoryController {
 	
 	public void iniciar(){
 		
-		listaProceso = new ListaProceso();
+		listaProceso = new ListaProceso("a");
 		//Proceso proceso1 = new Proceso(1,"primerProceso");
 		//Actividad actividad1 = new Actividad();
 		Tarea tarea1 = new Tarea("prender carro",true, 1, 2);
@@ -238,5 +238,12 @@ public class ModelFactoryController {
     	}
     }
 	
+    
+    //------------------------------------------ PRUEBAS CON LAS TABLAS ----------------------------------------------------
+    
+    public ListaProceso getLista(){
+    	return this.listaProceso;
+    }
+   
 	
 }

@@ -264,6 +264,10 @@ public class ListaActividad implements IListaActividadService{
 		return datos;
 	}
 	
+	public NodoDoble<Actividad> getCabeza(){
+		return this.cabeza;
+	}
+	
 	public void cambiarActividadesConTareas(String nombreActividad, Actividad actividad){
 		
 		NodoDoble<Actividad> actividadModificar = buscarNodoActividad(nombreActividad);

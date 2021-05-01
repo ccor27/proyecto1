@@ -6,7 +6,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -56,7 +55,7 @@ public class ConsultarProcesoView {
 		shell.setText("SWT Application");
 		
 		Label lblConsultarTiempoDe = new Label(shell, SWT.NONE);
-		lblConsultarTiempoDe.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 10, SWT.BOLD));
+		//lblConsultarTiempoDe.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 10, SWT.BOLD));
 		lblConsultarTiempoDe.setBounds(10, 10, 332, 24);
 		lblConsultarTiempoDe.setText("Consultar tiempo de la demora de un proceso.");
 		

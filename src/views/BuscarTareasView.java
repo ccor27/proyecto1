@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
-import org.eclipse.wb.swt.SWTResourceManager;
+//import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Button;
@@ -58,7 +58,7 @@ public class BuscarTareasView {
 		shell.setText("SWT Application");
 		
 		Label lblProcesos = new Label(shell, SWT.NONE);
-		lblProcesos.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 10, SWT.BOLD));
+		//lblProcesos.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 10, SWT.BOLD));
 		lblProcesos.setBounds(10, 10, 68, 19);
 		lblProcesos.setText("Procesos");
 		
@@ -67,7 +67,7 @@ public class BuscarTareasView {
 		combo.setText("Todos los procesos.");
 		
 		Group grpActividades = new Group(shell, SWT.NONE);
-		grpActividades.setForeground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_FOREGROUND));
+		//grpActividades.setForeground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_FOREGROUND));
 		grpActividades.setText("Actividades");
 		grpActividades.setBounds(10, 77, 775, 475);
 		
