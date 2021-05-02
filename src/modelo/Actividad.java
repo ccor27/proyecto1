@@ -7,6 +7,8 @@ public class Actividad {
 	private boolean esObligatorio;
 	private ColaTarea conjuntoTareas = new ColaTarea();
 	private double tiempo;
+	private double tiempoMin;
+	private double tiempoMax;
 	
 	public Actividad(){
 		
@@ -58,6 +60,20 @@ public class Actividad {
     public void mostrarTareas(){
     	conjuntoTareas.mostrarTareas();
     }
+	public double getTiempoMin() {
+		tiempoMin = conjuntoTareas.calcularTiempoMin();
+		return tiempoMin;
+	}
+	public void setTiempoMin(double tiempoMin) {
+		this.tiempoMin = tiempoMin;
+	}
+	public double getTiempoMax() {
+		tiempoMax = conjuntoTareas.calcularTiempoMax();
+		return tiempoMax;
+	}
+	public void setTiempoMax(double tiempoMax) {
+		this.tiempoMax = tiempoMax;
+	}
 	@Override
 	public String toString() {
 		return "Actividad:   "+nombre+"  "+tiempo+"\n"+"   "+conjuntoTareas.mostrarTareas()+"\n";

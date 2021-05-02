@@ -5,6 +5,7 @@ import modelo.ListaActividad;
 import modelo.ListaProceso;
 import modelo.Proceso;
 import modelo.Tarea;
+import views.ConfigurarProcesoView;
 
 public class ModelFactoryController {
 	
@@ -77,9 +78,9 @@ public class ModelFactoryController {
 		actividad4.getConjuntoTareas().insertarFinal(tarea444);
 		
 		
-		Proceso proceso1 = new Proceso(1, "proceso1");
+		Proceso proceso1 = new Proceso(1, "proceso1",0,0);
      	proceso1.getConjuntoActividades().insertarFinal(actividad1);
-		proceso1.getConjuntoActividades().insertarInicio(actividad4);
+		proceso1.getConjuntoActividades().insertarFinal(actividad4);
 		proceso1.getConjuntoActividades().insertarFinal(actividad3);
 		//proceso1.getConjuntoActividades().insertarFinal(actividad2);
 //		proceso1.getConjuntoActividades().insertarPosDeterminada(actividad2, "jugar futbol");
@@ -87,7 +88,8 @@ public class ModelFactoryController {
 //		proceso2.getConjuntoActividades().insertarFinal(actividad2);
 		listaProceso.insertarProceso(proceso1);
 		//listaProceso.insertarProceso(proceso2);
-		listaProceso.mostrarProcesos();
+		//listaProceso.mostrarProcesos();
+
         
 		//actividad1.getConjuntoTareas().mostrarTareas();
 		
@@ -100,8 +102,8 @@ public class ModelFactoryController {
 		listaProceso= new ListaProceso();
 	}
 	
-	public void crearProceso(int id, String nombre){
-		Proceso proceso = new Proceso(id, nombre);
+	public void crearProceso(int id, String nombre, double tiempoMax, double tiempoMin){
+		Proceso proceso = new Proceso(id, nombre, tiempoMax, tiempoMin);
 		listaProceso.insertarProceso(proceso);
 	}
 	
@@ -139,7 +141,7 @@ public class ModelFactoryController {
 		}
 	}
 	
-	public Actividad obtenerActivida(String nombre, String nombreProceso){
+	public Actividad buscarActivida(String nombre, String nombreProceso){
 		
 		Proceso proceso = listaProceso.obtenerProceso(nombreProceso);
 		
@@ -162,7 +164,7 @@ public class ModelFactoryController {
 		}
 	}
 	
-	public void insertarDespuesUltimaActividadCreada(String nombreProceso, String nombre, String descripcion, boolean esObligatorio){
+	public void crearDespuesUltimaActividadCreada(String nombreProceso, String nombre, String descripcion, boolean esObligatorio){
 		Proceso proceso = listaProceso.obtenerProceso(nombreProceso);
 		if(proceso!=null){
 			Actividad actividad = new Actividad(nombre, descripcion, esObligatorio);
@@ -237,6 +239,15 @@ public class ModelFactoryController {
     		return null;
     	}
     }
+    
+    public double calcularTiempoMinProceso (String nombreProceso){
+    	return listaProceso.calcularTiempoMin(nombreProceso);
+    }
+    
+	public double calcularTiempoMaxProceso(String nombreProceso) {
+		// TODO Auto-generated method stub
+		return listaProceso.calcularTiempoMax(nombreProceso);
+	}
 	
     
     //------------------------------------------ PRUEBAS CON LAS TABLAS ----------------------------------------------------

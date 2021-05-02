@@ -5,7 +5,7 @@ import services.IListaActividadService;
 public class ListaActividad implements IListaActividadService{
 
 	private NodoDoble<Actividad>cabeza, fin;
-	private String nombreUltimaActivdad;
+	private String nombreUltimaActivdad="";
 	private int longitud=0;
 	
 	public ListaActividad(){
@@ -20,6 +20,8 @@ public class ListaActividad implements IListaActividadService{
 		
         if(cabeza == null){
         	cabeza = fin = nodo;
+        	cabeza.setSiguiente(fin);
+        	fin.setAnterior(cabeza);
         	nombreUltimaActivdad = actividad.getNombre();
         	longitud++;
         }else{
@@ -65,11 +67,36 @@ public class ListaActividad implements IListaActividadService{
            
 			if(nodo==cabeza){
 				
-				NodoDoble<Actividad> aux = cabeza.getSiguiente();
-				cabeza.setSiguiente(nodoNuevo);
-				nodoNuevo.setAnterior(cabeza);
-				nodoNuevo.setSiguiente(aux);
-				aux.setAnterior(nodoNuevo);
+//              if(cabeza.getSiguiente()==null){
+//                   cabeza.setSiguiente(nodoNuevo);
+//              }else{
+  				NodoDoble<Actividad> aux = cabeza.getSiguiente();
+  				cabeza.setSiguiente(nodoNuevo);
+  				nodoNuevo.setAnterior(cabeza);
+  				nodoNuevo.setSiguiente(aux);
+  				aux.setAnterior(nodoNuevo);
+//              }
+//                cabeza.setSiguiente(nodoNuevo);
+//                nodoNuevo.setAnterior(cabeza);
+//                nodoNuevo.setSiguiente(fin);
+//                fin.setAnterior(nodoNuevo);
+//				if( nodo==fin){
+//	                cabeza.setSiguiente(nodoNuevo);
+//	                nodoNuevo.setAnterior(cabeza);
+//	                nodoNuevo.setSiguiente(fin);
+//	                fin.setAnterior(nodoNuevo);
+//				}else{
+//	              if(cabeza.getSiguiente()==null){
+//                  cabeza.setSiguiente(nodoNuevo);
+//             }else{
+// 				NodoDoble<Actividad> aux = cabeza.getSiguiente();
+// 				cabeza.setSiguiente(nodoNuevo);
+// 				nodoNuevo.setAnterior(cabeza);
+// 				nodoNuevo.setSiguiente(aux);
+// 				aux.setAnterior(nodoNuevo);
+//             }
+//				}
+  				
 				
 				
 			}else{
@@ -141,7 +168,7 @@ public class ListaActividad implements IListaActividadService{
 				actividad = nodo.getValorNodo();
 			}
 		}else{//si hay mas de una actividad
-			while(nodo.getSiguiente()!=null){
+			while(nodo!=null){
 				if(nodo.getValorNodo().getNombre().equalsIgnoreCase(nombre)){
 					actividad = nodo.getValorNodo();
 				}
@@ -302,6 +329,26 @@ public class ListaActividad implements IListaActividadService{
 		}
 		
 		
+	}
+	
+	public double calcularTiempoMinActividades (){
+		double tiempoMinActividades =0;
+		NodoDoble<Actividad> puntero = cabeza;
+		while(puntero!=null){
+			tiempoMinActividades+=puntero.getValorNodo().getTiempoMin();
+			puntero=puntero.getSiguiente();
+		}
+		return tiempoMinActividades;
+	}
+	
+	public double calcularTiempoMaxActividades (){
+		double tiempoMaxActividades =0;
+		NodoDoble<Actividad> puntero = cabeza;
+		while(puntero!=null){
+			tiempoMaxActividades+=puntero.getValorNodo().getTiempoMax();
+			puntero=puntero.getSiguiente();
+		}
+		return tiempoMaxActividades;
 	}
 	
 

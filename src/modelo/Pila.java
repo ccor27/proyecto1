@@ -14,7 +14,7 @@ public class Pila {
 		if(inicio == null){
 			inicio = nodo;
 		}else{
-			inicio.setSiguiente(inicio);
+			nodo.setSiguiente(inicio);
 			inicio = nodo;
 			
 		}
@@ -22,9 +22,16 @@ public class Pila {
 	}
 	
 	public Tarea sacarTarea(){
-		Nodo<Tarea>  aux = inicio;
-		inicio = inicio.getSiguiente();
-		return aux.getValorNodo();
+		
+		if(inicio==null){
+			return null;
+		}else{
+			Nodo<Tarea>  aux = inicio;
+			inicio = inicio.getSiguiente();
+			tamanio--;
+			return aux.getValorNodo();
+		}
+
 	}
 	
 	public int getTamanio(){
