@@ -6,14 +6,19 @@ public class Proceso {
 	private String nombre;
 	private ListaActividad conjuntoActividades;
 	private double tiempo;
+	private double tiempoMin;
+	private double tiempoMax;
 	
 	public Proceso(){
 		
 	}
-	public Proceso(int id, String nombre){
+	public Proceso(int id, String nombre, double tiempoMin, double tiempoMax){
 		this.id = id;
 		this.nombre = nombre;
+		this.tiempoMin = tiempoMin;
+		this.tiempoMax = tiempoMax;
 		this.conjuntoActividades = new ListaActividad();
+		
 	}
 
 	/**
@@ -45,11 +50,28 @@ public class Proceso {
 	public void setTiempo(double tiempo) {
 		this.tiempo = tiempo;
 	}
+	public double getTiempoMin() {
+		tiempoMin = conjuntoActividades.calcularTiempoMinActividades();
+		return tiempoMin;
+	}
+	public void setTiempoMin(double tiempoMin) {
+		this.tiempoMin = tiempoMin;
+	}
+	public double getTiempoMax() {
+		tiempoMax = conjuntoActividades.calcularTiempoMaxActividades();
+		return tiempoMax;
+	}
+	public void setTiempoMax(double tiempoMax) {
+		this.tiempoMax = tiempoMax;
+	}
 	@Override
 	public String toString() {
 		return "Proceso "+nombre+"  timepo estimado: "+getTiempo()+" \n "+ conjuntoActividades.mostrarActividades();
 	}
 	
+	
+	
+
 	
 	
 }

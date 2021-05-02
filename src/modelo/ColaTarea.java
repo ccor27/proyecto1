@@ -22,12 +22,18 @@ public class ColaTarea implements IColaService {
 		
 		Nodo<Tarea> nodo = new Nodo<Tarea>(tarea);
 		
-		if(inicio == null || fin ==null){
+		if(inicio == null && fin ==null){
+
 			inicio = nodo;
 			fin=nodo;
 			inicio.setSiguiente(fin);
 		}else{
-			fin.setSiguiente(nodo);
+			if(!(nodo.getValorNodo().getEsObligatorio()==false && fin.getValorNodo().getEsObligatorio()==false)){
+				fin.setSiguiente(nodo);
+			}else{
+				System.out.println("no se pueden ingresar dos tareas No obligatorias");
+			}
+			
 		}
 		fin = nodo;
 	}
@@ -39,10 +45,9 @@ public class ColaTarea implements IColaService {
 	public void insertarPosDeterminada(Tarea tarea, int indice){
 		
 		int contador = 1;	
-		boolean centinela = false;
 		Pila pilaAux = new Pila();
 		
-		while(centinela == false){
+		while(true){
 			Nodo<Tarea> nodo = sacarPorElInicio();
 			//vamos sacando los elementos de la cola por el inicio y agregandolos a una pila
 			// hasta encontrar la posicion pedida
@@ -50,12 +55,13 @@ public class ColaTarea implements IColaService {
 			
 			if (contador == indice) {
 				
-                if(!(nodo.getValorNodo().getEsObligatorio())){
-                   insertarInicio(tarea);//insertamos la nueva tarea
-                   obtenerDatosPila(pilaAux);//ingresamos las tareas anteriormente ingresadas a la pila
-                   centinela=true;
-                }else{
+                if(nodo.getValorNodo().getEsObligatorio()==false && tarea.getEsObligatorio()==false && nodo.getSiguiente().getValorNodo().getEsObligatorio()==false){
                 	System.out.println("no puede ingresar dos tareas NO obligatorias seguidas");
+                   break;
+                }else{
+                    insertarInicio(tarea);//insertamos la nueva tarea
+                    obtenerDatosPila(pilaAux);//ingresamos las tareas anteriormente ingresadas a la pila
+                    break;
                 }
 			}
 			contador++;
@@ -68,9 +74,14 @@ public class ColaTarea implements IColaService {
 	 */
 	private void obtenerDatosPila(Pila pila){
 		
-		int tam = pila.getTamanio();
-		for (int i = tam; i > 0 ; i--) {
-			insertarInicio(pila.sacarTarea());
+//		int tam = pila.getTamanio();
+//		for (int i = tam; i >= 0 ; i--) {
+//			insertarInicio(pila.sacarTarea());
+//		}
+		Tarea tarea = pila.sacarTarea();
+		while(tarea!=null){
+			insertarInicio(tarea);
+			tarea=pila.sacarTarea();
 		}
 	}
 	
@@ -95,12 +106,13 @@ public class ColaTarea implements IColaService {
 			if(inicio == null){
 				inicio = nuevoNodo;
 			}else{
-				if(inicio.getValorNodo().getEsObligatorio()==true){
+				if(inicio.getValorNodo().getEsObligatorio()==false && tarea.getEsObligatorio()==false){
+					System.out.println("no se pudo ingresar la tarea linea 114 ColaTarea");
+				}else{
 					Nodo<Tarea> nodo = inicio;
 					nuevoNodo.setSiguiente(nodo);
 					inicio = nuevoNodo;
-				}else{
-					System.out.println("no se pudo ingresar la tarea");
+					
 				}
 
 			}
@@ -111,6 +123,9 @@ public class ColaTarea implements IColaService {
 		Nodo<Tarea> aux = inicio;
 		inicio = inicio.getSiguiente();
 		return aux;
+	}
+	public Nodo<Tarea> obtenerInicio(){
+		return inicio;
 	}
 
 	public int obtenerTiempoTotalCola(){
@@ -133,5 +148,28 @@ public class ColaTarea implements IColaService {
 		}
 		return datos;
 	}
+	
+	public double calcularTiempoMin(){
+		double tiempoMin=0;
+		Nodo<Tarea> puntero = inicio;
+		while(puntero!=null){
+			tiempoMin += puntero.getValorNodo().getTiempoMin();
+			puntero = puntero.getSiguiente();
+		}
+		
+		return tiempoMin;
+	}
+	
+	public double calcularTiempoMax(){
+		double tiempoMax=0;
+		Nodo<Tarea> puntero = inicio;
+		while(puntero!=null){
+			tiempoMax += puntero.getValorNodo().getTiempoMax();
+			puntero = puntero.getSiguiente();
+		}
+		
+		return tiempoMax;
+	}
+
 
 }

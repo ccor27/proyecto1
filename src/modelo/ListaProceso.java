@@ -113,7 +113,29 @@ public class ListaProceso {
 	
 	
 	
-	
+	public double calcularTiempoMin(String nombreProceso) {
+		// TODO Auto-generated method stub
+		Proceso p = obtenerProceso(nombreProceso);
+		
+		if(p==null){
+			System.out.println("El proceso no existe.");
+			return -1;
+		}else{
+			return p.getTiempoMin();
+		}
+		
+	}
+	public double calcularTiempoMax(String nombreProceso) {
+		// TODO Auto-generated method stub
+		Proceso p = obtenerProceso(nombreProceso);
+		
+		if(p==null){
+			System.out.println("El proceso no existe.");
+			return -1;
+		}else{
+			return p.getTiempoMax();
+		}
+	}
 	
 	
 	

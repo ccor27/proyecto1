@@ -5,18 +5,30 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+
+import controller.ConfigurarProcesoViewController;
+import controller.ConsultarProcesoViewController;
+import modelo.ListaProceso;
+import modelo.Nodo;
+import modelo.Proceso;
+
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class ConsultarProcesoView {
 
 	protected Shell shell;
-	private Text text;
-
+	private Text textTiempos;
+	private Combo comboBoxConsultaProceso;
+	ConsultarProcesoViewController procesoViewController = new ConsultarProcesoViewController();
+	private ListaProceso lista= procesoViewController.getListaProceso();
+	private String nombreProceso;
 	/**
 	 * Launch the application.
 	 * @param args
@@ -44,6 +56,9 @@ public class ConsultarProcesoView {
 			}
 		}
 	}
+	public void setListaProceso(ListaProceso lista){
+		this.lista=lista;
+	}
 
 	/**
 	 * Create contents of the window.
@@ -59,16 +74,50 @@ public class ConsultarProcesoView {
 		lblConsultarTiempoDe.setBounds(10, 10, 332, 24);
 		lblConsultarTiempoDe.setText("Consultar tiempo de la demora de un proceso.");
 		
-		Combo combo_1 = new Combo(shell, SWT.NONE);
-		combo_1.setBounds(10, 64, 143, 23);
-		combo_1.setText("Seleccione el proceso.");
-		
+		comboBoxConsultaProceso = new Combo(shell, SWT.NONE);
+		comboBoxConsultaProceso.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				nombreProceso=comboBoxConsultaProceso.getText();
+			}
+		});
+		comboBoxConsultaProceso.setBounds(10, 64, 143, 23);
+		comboBoxConsultaProceso.setText("Seleccione el proceso.");
+		cargarDatosComboBox();
 		Button btnConsultar = new Button(shell, SWT.NONE);
+		btnConsultar.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				double tiempoMin=procesoViewController.calcularTiempoMin(nombreProceso);
+				double tiempoMax=procesoViewController.calcularTiempoMax(nombreProceso);
+				textTiempos.setText("Tiempo Minimo: "+String.valueOf(tiempoMin)+ "\n" +"Tiempo Maximo: "+ String.valueOf(tiempoMax));
+				
+			}
+		});
 		btnConsultar.setBounds(246, 64, 75, 25);
 		btnConsultar.setText("Consultar");
 		
-		text = new Text(shell, SWT.BORDER);
-		text.setBounds(10, 119, 311, 92);
+		
+		
+		textTiempos = new Text(shell, SWT.BORDER | SWT.V_SCROLL);
+		textTiempos.setBounds(10, 119, 311, 92);
+		textTiempos.setEditable(false);
+		//textTiempos.setText("Tiempo minimo:" +'\n'+ "Tiempo maximo: ");
+		
 
+	}
+	
+	/**
+	 * Open the window.
+	 */
+
+	
+	public void cargarDatosComboBox(){
+		
+		Nodo<Proceso> puntero = lista.getInicio();
+		while(puntero!=null){
+			comboBoxConsultaProceso.add(puntero.getValorNodo().getNombre());
+			puntero=puntero.getSiguiente();
+		}
 	}
 }
