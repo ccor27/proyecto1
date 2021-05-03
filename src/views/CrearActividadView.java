@@ -468,6 +468,7 @@ public class CrearActividadView {
 	}
 	
 	public void limpiarCamposTarea(){
+		comboBoxNombreActividad.removeAll();
 		txtDescripcionTarea.setText("");
 		txtTiempoMax.setText("");
 		txtTiempoMin.setText("");
@@ -506,6 +507,7 @@ public class CrearActividadView {
 	}
 	
 	public void limpiarCamposActividad(){
+
 		txtNombreActividad.setText("");
 		txtDescripcionActividad.setText("");
 		txtNombreActivPrecedida.setText("");

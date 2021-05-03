@@ -59,7 +59,9 @@ public class PrincipalView {
 		btnCrearProceso.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			 
+				ProcesoView procesoView = new ProcesoView();
+				shlPrincipal.close();
+				procesoView.open();
 			}
 		});
 		btnCrearProceso.setBounds(129, 138, 149, 25);
@@ -104,12 +106,38 @@ public class PrincipalView {
 		btnBuscarActividad.setText("Buscar actividad");
 		
 		Button btnBuscarTarea = new Button(shlPrincipal, SWT.NONE);
+		btnBuscarTarea.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				BuscarTareasView buscarTareasView = new BuscarTareasView();
+				shlPrincipal.close();
+				buscarTareasView.open();
+			}
+		});
 		btnBuscarTarea.setBounds(129, 271, 149, 25);
 		btnBuscarTarea.setText("Buscar Tarea");
 		
 		Button btnSalir = new Button(shlPrincipal, SWT.NONE);
+		btnSalir.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				shlPrincipal.close();
+			}
+		});
 		btnSalir.setBounds(383, 271, 149, 25);
 		btnSalir.setText("Salir");
+		
+		Button btnTransferirActividades = new Button(shlPrincipal, SWT.NONE);
+		btnTransferirActividades.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TransferenciaActividadesView transferenciaActividadesView = new TransferenciaActividadesView();
+				shlPrincipal.close();
+				transferenciaActividadesView.open();
+			}
+		});
+		btnTransferirActividades.setBounds(132, 320, 146, 25);
+		btnTransferirActividades.setText("Transferir actividades");
 
 	}
 }

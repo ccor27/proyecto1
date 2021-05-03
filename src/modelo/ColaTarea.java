@@ -1,13 +1,19 @@
 package modelo;
 
+import java.io.Serializable;
+
 import services.IColaService;
 /**
  * 
  * posicion determinada agregar tarea
  * buscar tarea por descripcion
  */
-public class ColaTarea implements IColaService {
+public class ColaTarea implements IColaService,  Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Nodo<Tarea> inicio, fin;
 
 	
@@ -124,9 +130,6 @@ public class ColaTarea implements IColaService {
 		inicio = inicio.getSiguiente();
 		return aux;
 	}
-	public Nodo<Tarea> obtenerInicio(){
-		return inicio;
-	}
 
 	public int obtenerTiempoTotalCola(){
 		
@@ -171,5 +174,21 @@ public class ColaTarea implements IColaService {
 		return tiempoMax;
 	}
 
+	public Nodo<Tarea> getInicio(){
+		return inicio;
+	}
+	public void setInicio(Nodo<Tarea> inicio) {
+		this.inicio = inicio;
+	}
+
+	public Nodo<Tarea> getFin() {
+		return fin;
+	}
+
+	public void setFin(Nodo<Tarea> fin) {
+		this.fin = fin;
+	}
+
+	
 
 }

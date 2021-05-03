@@ -1,8 +1,13 @@
 package modelo;
 
+import java.io.Serializable;
 
-public class Nodo<T> {
+public class Nodo<T> implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Nodo<T> siguiente;
 	private T valorNodo;
 	

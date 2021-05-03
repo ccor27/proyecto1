@@ -109,7 +109,7 @@ public class ConfigurarProcesoView {
 				principalView.open();
 			}
 		});
-		btnAtras.setBounds(474, 693, 117, 25);
+		btnAtras.setBounds(446, 693, 117, 25);
 		btnAtras.setText("Atras");
 		
 		Button btnCrearActividad = new Button(shlConfigurarProcesos, SWT.NONE);
@@ -131,12 +131,8 @@ public class ConfigurarProcesoView {
 				}
 			}
 		});
-		btnCrearActividad.setBounds(105, 693, 117, 25);
+		btnCrearActividad.setBounds(166, 693, 117, 25);
 		btnCrearActividad.setText("Crear actividad");
-		
-		Button btnCrearTarea = new Button(shlConfigurarProcesos, SWT.NONE);
-		btnCrearTarea.setBounds(312, 693, 75, 25);
-		btnCrearTarea.setText("Crear tarea");
 		
 		Group grpListaActividad = new Group(shlConfigurarProcesos, SWT.NONE);
 		grpListaActividad.setText("Lista actividad");
@@ -148,7 +144,7 @@ public class ConfigurarProcesoView {
 		tblActividades.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				tblTareas.removeAll();
+				
 				int a = tblActividades.getSelectionIndex();
 				System.out.println(a);
 				String c = tblActividades.getItem(a).getText();
@@ -220,6 +216,7 @@ public class ConfigurarProcesoView {
 	
 	public void cargarDatosTablaActivida(String nombre){
 		
+		tblActividades.removeAll();
 		Proceso proceso = lista.obtenerProceso(nombre);
 		if(proceso!=null){
 			ListaActividad listaActividad = proceso.getConjuntoActividades();
@@ -236,8 +233,9 @@ public class ConfigurarProcesoView {
 	}
 	
 	public void cargarDatosTablaTarea(Actividad act){
+		tblTareas.removeAll();
 		ColaTarea cola = act.getConjuntoTareas();
-		Nodo<Tarea> puntero = cola.obtenerInicio();
+		Nodo<Tarea> puntero = cola.getInicio();
 		while(puntero!=null){
 			Tarea t = puntero.getValorNodo();
 			TableItem item = new TableItem(tblTareas, SWT.NONE);

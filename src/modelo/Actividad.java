@@ -1,7 +1,13 @@
 package modelo;
 
-public class Actividad {
+import java.io.Serializable;
 
+public class Actividad implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private String descripcion;
 	private boolean esObligatorio;
@@ -74,6 +80,7 @@ public class Actividad {
 	public void setTiempoMax(double tiempoMax) {
 		this.tiempoMax = tiempoMax;
 	}
+	
 	@Override
 	public String toString() {
 		return "Actividad:   "+nombre+"  "+tiempo+"\n"+"   "+conjuntoTareas.mostrarTareas()+"\n";

@@ -182,7 +182,7 @@ public class BuscarActividadView {
 
 	}
 	public void cargarNombresProceso(){
-		
+		comboBoxNombreProceso.removeAll();
 		Nodo<Proceso> puntero = lista.getInicio();
 		while(puntero!=null){
 			comboBoxNombreProceso.add(puntero.getValorNodo().getNombre());
@@ -191,6 +191,7 @@ public class BuscarActividadView {
 	}
 	
 	public void cargarNombresActividad(){
+		comboBoxNombreActividad.removeAll();
 		String nombreProceso = comboBoxNombreProceso.getText();
         Proceso proceso = lista.obtenerProceso(nombreProceso);
         if(proceso!=null){
