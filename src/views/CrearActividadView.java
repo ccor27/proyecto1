@@ -225,7 +225,6 @@ public class CrearActividadView {
                 			String nombre = txtNombreActividad.getText();
                 			String descripcion = txtDescripcionActividad.getText();
                 			if(rbtnActividadSi.getSelection()){
-                				System.out.println("nombre del proceso: "+nombreProceso);
                 				 crearActividadViewController.crearActividadFin( nombreProceso, nombre,descripcion, true);
                 				 cargarNombresCombo();
                 				 limpiarCamposActividad();
