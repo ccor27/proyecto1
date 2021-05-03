@@ -31,8 +31,6 @@ public class ListaActividad implements IListaActividadService, Serializable{
 		
         if(cabeza == null){
         	cabeza = fin = nodo;
-        	cabeza.setSiguiente(fin);
-        	fin.setAnterior(cabeza);
         	nombreUltimaActivdad = actividad.getNombre();
         	longitud++;
         }else{
