@@ -1,7 +1,13 @@
 package modelo;
 
-public class ListaProceso {
+import java.io.Serializable;
 
+public class ListaProceso implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Nodo<Proceso> inicio;
 	private int longitud;
 	private int tiempoProceso;
@@ -16,6 +22,7 @@ public class ListaProceso {
 	public ListaProceso(){
 		
 	}
+
 	
 	public void insertarProceso(Proceso proceso){
 		
@@ -73,13 +80,6 @@ public class ListaProceso {
 		System.out.println(datos);
 	}
 	
-	public Nodo<Proceso> getInicio(){
-		return this.inicio;
-	}
-	public int obtenerCantidadProcesos(){
-		return longitud;
-	}
-	
 	public void intercambiarActividades(String nombreProceso1,String nombreProceso2,String nombreActividad1,String nombreActividad2, boolean cambiarConTareas){
 		
 		Proceso p1 = obtenerProceso(nombreProceso1);
@@ -104,8 +104,7 @@ public class ListaProceso {
 					p1.getConjuntoActividades().cambiarActividadesConTareas(nombreActividad1, act2);
 					p2.getConjuntoActividades().cambiarActividadesConTareas(nombreActividad2, act1);
 				}else{
-					p1.getConjuntoActividades().cambiarActividadesSinTareas(nombreActividad1, act2);
-					p2.getConjuntoActividades().cambiarActividadesSinTareas(nombreActividad2, act1);
+					p1.getConjuntoActividades().cambiarActividadesSinTareas(act1, act2);
 				}
 			}
 		}
@@ -137,8 +136,30 @@ public class ListaProceso {
 		}
 	}
 	
-	
-	
+	public Nodo<Proceso> getInicio(){
+		return this.inicio;
+	}
+	public int getLongitud(){
+		return this.longitud;
+	}
+	public void setLongitud(int longitud) {
+		this.longitud = longitud;
+	}
+	public int getTiempoProceso() {
+		return tiempoProceso;
+	}
+	public void setTiempoProceso(int tiempoProceso) {
+		this.tiempoProceso = tiempoProceso;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public void setInicio(Nodo<Proceso> inicio) {
+		this.inicio = inicio;
+	}
 	
 	
 }

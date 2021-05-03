@@ -6,18 +6,35 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
+
+
+import controller.ProcesoViewController;
+import modelo.ListaProceso;
+import modelo.Nodo;
+import modelo.Proceso;
+
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Table;
+
+import javax.swing.JOptionPane;
+
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class ProcesoView {
 
-	protected Shell shell;
-	private Text text;
-	private Text text_1;
-	private Table table;
+	ProcesoViewController procesoViewController = new ProcesoViewController();
+	private ListaProceso lista= procesoViewController.getListaProceso();
+	protected Shell shlCrearProceso;
+	private Text txtId;
+	private Text txtNombre;
+	private Table tblProcesos;
+	
+	
 
 	/**
 	 * Launch the application.
@@ -27,6 +44,7 @@ public class ProcesoView {
 		try {
 			ProcesoView window = new ProcesoView();
 			window.open();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -38,9 +56,10 @@ public class ProcesoView {
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
+		shlCrearProceso.open();
+		shlCrearProceso.layout();
+		cargarDatosTablaProceso();
+		while (!shlCrearProceso.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -51,11 +70,12 @@ public class ProcesoView {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shell = new Shell();
-		shell.setSize(619, 429);
-		shell.setText("SWT Application");
+		shlCrearProceso = new Shell();
+
+		shlCrearProceso.setSize(619, 429);
+		shlCrearProceso.setText("Crear Proceso ");
 		
-		Group grpProceso = new Group(shell, SWT.NONE);
+		Group grpProceso = new Group(shlCrearProceso, SWT.NONE);
 		grpProceso.setText("Proceso");
 		grpProceso.setBounds(23, 10, 570, 75);
 		
@@ -67,49 +87,87 @@ public class ProcesoView {
 		lblNombre.setBounds(182, 23, 55, 15);
 		lblNombre.setText("Nombre:");
 		
-		text = new Text(grpProceso, SWT.BORDER);
-		text.setBounds(49, 20, 82, 21);
+		txtId = new Text(grpProceso, SWT.BORDER);
+		txtId.setBounds(49, 20, 82, 21);
 		
-		text_1 = new Text(grpProceso, SWT.BORDER);
-		text_1.setBounds(243, 20, 114, 21);
+		txtNombre = new Text(grpProceso, SWT.BORDER);
+		txtNombre.setBounds(243, 20, 114, 21);
 		
 		Button btnCrear = new Button(grpProceso, SWT.NONE);
+		btnCrear.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+                
+				if(!camposVacios()){
+					int id= Integer.parseInt(txtId.getText());
+					String nombre = txtNombre.getText();
+					
+					procesoViewController.crearProceso(id,nombre);
+					cargarDatosTablaProceso();
+					limpiarCampos();
+				}else{
+					JOptionPane.showMessageDialog(null, "debe llenar todos los campos");
+				}
+			}
+		});
 		btnCrear.setBounds(441, 18, 75, 25);
 		btnCrear.setText("Crear");
 		
-		Group grpListaProcesos = new Group(shell, SWT.NONE);
+		Group grpListaProcesos = new Group(shlCrearProceso, SWT.NONE);
 		grpListaProcesos.setText("Lista Procesos");
 		grpListaProcesos.setBounds(23, 105, 570, 223);
 		
-		TableViewer tableViewer = new TableViewer(grpListaProcesos, SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-		table.setBounds(10, 21, 550, 192);
+		tblProcesos = new Table(grpListaProcesos, SWT.BORDER | SWT.FULL_SELECTION);
+		tblProcesos.setBounds(10, 25, 550, 188);
+		tblProcesos.setHeaderVisible(true);
+		tblProcesos.setLinesVisible(true);
 		
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnId = tableViewerColumn.getColumn();
-		tblclmnId.setWidth(69);
+		TableColumn tblclmnId = new TableColumn(tblProcesos, SWT.NONE);
+		tblclmnId.setWidth(100);
 		tblclmnId.setText("Id");
 		
-		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnNombre = tableViewerColumn_1.getColumn();
-		tblclmnNombre.setWidth(130);
+		TableColumn tblclmnNombre = new TableColumn(tblProcesos, SWT.NONE);
+		tblclmnNombre.setWidth(247);
 		tblclmnNombre.setText("Nombre");
 		
-		TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnTiempo = tableViewerColumn_2.getColumn();
-		tblclmnTiempo.setWidth(100);
-		tblclmnTiempo.setText("Tiempo");
+		TableColumn tblclmnNewColumn = new TableColumn(tblProcesos, SWT.NONE);
+		tblclmnNewColumn.setWidth(200);
+		tblclmnNewColumn.setText("Tiempo");
 		
-		TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnActividades = tableViewerColumn_3.getColumn();
-		tblclmnActividades.setWidth(223);
-		tblclmnActividades.setText("Actividades");
-		
-		Button btnAtras = new Button(shell, SWT.NONE);
+		Button btnAtras = new Button(shlCrearProceso, SWT.NONE);
+		btnAtras.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				PrincipalView principalView = new PrincipalView();
+				shlCrearProceso.close();
+				principalView.open();
+			}
+		});
 		btnAtras.setBounds(502, 355, 75, 25);
 		btnAtras.setText("Atras");
 
+	}
+	
+	public void cargarDatosTablaProceso(){
+		tblProcesos.removeAll();
+		Nodo<Proceso> puntero = lista.getInicio();
+		while(puntero!=null){
+			
+			TableItem item = new TableItem(tblProcesos, SWT.NONE);
+			item.setText(new String[] {String.valueOf(puntero.getValorNodo().getId()),puntero.getValorNodo().getNombre(),
+					String.valueOf(puntero.getValorNodo().getTiempo())});
+			puntero=puntero.getSiguiente();
+		}
+	}
+	public void limpiarCampos(){
+		txtId.setText("");
+		txtNombre.setText("");
+	}
+	public boolean camposVacios(){
+		if(txtId.getText().equalsIgnoreCase("")||txtNombre.getText().equalsIgnoreCase("")){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }

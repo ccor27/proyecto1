@@ -1,7 +1,13 @@
 package modelo;
 
-public class NodoDoble<T> {
+import java.io.Serializable;
 
+public class NodoDoble<T> implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private NodoDoble<T> siguiente;
 	private NodoDoble<T> anterior;
 	private T valorNodo;

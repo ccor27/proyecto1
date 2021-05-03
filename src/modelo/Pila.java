@@ -1,7 +1,13 @@
 package modelo;
 
-public class Pila {
+import java.io.Serializable;
 
+public class Pila implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Nodo<Tarea> inicio;
 	private int tamanio=0;
 	
@@ -9,6 +15,7 @@ public class Pila {
 		inicio = null;
 	}
 	
+
 	public void insertar(Tarea tarea){
 		Nodo<Tarea>  nodo = new Nodo<Tarea> (tarea);
 		if(inicio == null){
@@ -36,5 +43,16 @@ public class Pila {
 	
 	public int getTamanio(){
 		return tamanio;
+	}
+	public Nodo<Tarea> getInicio() {
+		return inicio;
+	}
+
+	public void setInicio(Nodo<Tarea> inicio) {
+		this.inicio = inicio;
+	}
+
+	public void setTamanio(int tamanio) {
+		this.tamanio = tamanio;
 	}
 }
