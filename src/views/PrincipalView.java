@@ -104,6 +104,11 @@ public class PrincipalView {
 		btnBuscarActividad.setText("Buscar actividad");
 		
 		Button btnBuscarTarea = new Button(shlPrincipal, SWT.NONE);
+		btnBuscarTarea.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
 		btnBuscarTarea.setBounds(129, 271, 149, 25);
 		btnBuscarTarea.setText("Buscar Tarea");
 		
