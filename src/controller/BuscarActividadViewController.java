@@ -25,4 +25,9 @@ public class BuscarActividadViewController {
 		
 	}
 
+	public String vecesActEnProcesos(String nombreActividad) {
+		
+		return modelFactoryController.vecesActEnProcesos(nombreActividad);
+	}
+
 }

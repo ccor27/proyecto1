@@ -23,8 +23,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.jface.viewers.ComboViewer;
 
-public class CrearActividadView {
+public class CrearActividadYTareaView {
 
 	protected Shell shlCrearActividad;
 	private Text txtNombreActividad;
@@ -43,18 +44,18 @@ public class CrearActividadView {
 	private Button rbtnTareaNo;
 
 	private String nombreProceso;
-	private Text txtNombreActivPrecedida;
 	private Text txtPosicionTarea;
 	private CrearActividadViewController crearActividadViewController = new CrearActividadViewController();
 	
 	private ListaProceso lista= crearActividadViewController.getListaProceso();
+	private Combo comboBoxNombrePrecedida;
 	/**
 	 * Launch the application.
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		try {
-			CrearActividadView window = new CrearActividadView();
+			CrearActividadYTareaView window = new CrearActividadYTareaView();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,8 +88,8 @@ public class CrearActividadView {
 	protected void createContents() {
 		
 		shlCrearActividad = new Shell();
-		shlCrearActividad.setSize(640, 855);
-		shlCrearActividad.setText("Crear actividad\r\n");
+		shlCrearActividad.setSize(1024, 519);
+		shlCrearActividad.setText("Crear actividad y/o tarea\r\n");
 		
 		Button btnAtras = new Button(shlCrearActividad, SWT.NONE);
 		btnAtras.addSelectionListener(new SelectionAdapter() {
@@ -104,24 +105,24 @@ public class CrearActividadView {
 		
 		Group grpDatosActividad = new Group(shlCrearActividad, SWT.NONE);
 		grpDatosActividad.setText("Datos actividad");
-		grpDatosActividad.setBounds(24, 23, 578, 311);
+		grpDatosActividad.setBounds(10, 10, 486, 393);
 		
 		Label lblNombre = new Label(grpDatosActividad, SWT.NONE);
-		lblNombre.setBounds(48, 83, 55, 15);
+		lblNombre.setBounds(50, 100, 55, 15);
 		lblNombre.setText("Nombre");
 		
 		txtNombreActividad = new Text(grpDatosActividad, SWT.BORDER);
-		txtNombreActividad.setBounds(205, 80, 205, 21);
+		txtNombreActividad.setBounds(205, 97, 205, 21);
 		
 		Label lblDescripcion = new Label(grpDatosActividad, SWT.NONE);
-		lblDescripcion.setBounds(48, 170, 76, 15);
+		lblDescripcion.setBounds(48, 221, 76, 15);
 		lblDescripcion.setText("Descripcion");
 		
 		txtDescripcionActividad = new Text(grpDatosActividad, SWT.BORDER);
-		txtDescripcionActividad.setBounds(205, 167, 205, 21);
+		txtDescripcionActividad.setBounds(205, 218, 205, 21);
 		
 		Label lblObligatoria = new Label(grpDatosActividad, SWT.NONE);
-		lblObligatoria.setBounds(48, 222, 76, 15);
+		lblObligatoria.setBounds(48, 282, 76, 15);
 		lblObligatoria.setText("Obligatoria");
 		
 		rbtnActividadSi = new Button(grpDatosActividad, SWT.RADIO);
@@ -133,7 +134,7 @@ public class CrearActividadView {
 				}
 			}
 		});
-		rbtnActividadSi.setBounds(209, 221, 90, 16);
+		rbtnActividadSi.setBounds(208, 281, 90, 16);
 		rbtnActividadSi.setText("si");
 		
 		
@@ -146,7 +147,7 @@ public class CrearActividadView {
 				}
 			}
 		});
-		rbtnActividadNo.setBounds(359, 221, 90, 16);
+		rbtnActividadNo.setBounds(320, 281, 90, 16);
 		rbtnActividadNo.setText("no");
 		
 		Button btnLimpiarActividad = new Button(grpDatosActividad, SWT.NONE);
@@ -156,16 +157,12 @@ public class CrearActividadView {
 				limpiarCamposActividad();
 			}
 		});
-		btnLimpiarActividad.setBounds(349, 270, 100, 25);
+		btnLimpiarActividad.setBounds(279, 345, 100, 25);
 		btnLimpiarActividad.setText("Limpiar");
 		
 		Label lblNombreActividadPrecedida = new Label(grpDatosActividad, SWT.NONE);
-		lblNombreActividadPrecedida.setBounds(48, 129, 151, 15);
+		lblNombreActividadPrecedida.setBounds(48, 160, 151, 15);
 		lblNombreActividadPrecedida.setText("Nombre actividad precedida");
-		
-		txtNombreActivPrecedida = new Text(grpDatosActividad, SWT.BORDER);
-		txtNombreActivPrecedida.setBounds(205, 126, 205, 21);
-		txtNombreActivPrecedida.setEnabled(false);
 		
 		Label lblTipoDeCreacion = new Label(grpDatosActividad, SWT.NONE);
 		lblTipoDeCreacion.setBounds(48, 32, 110, 15);
@@ -182,9 +179,12 @@ public class CrearActividadView {
 				String opcion = comboBoxTipoCreacionActividad.getText();
 
 				if(opcion.equalsIgnoreCase("crear dado el nombre de la actividad que la precederá")){
-					txtNombreActivPrecedida.setEnabled(true);
+					comboBoxNombrePrecedida.setEnabled(true);
+					cargarNombreActividad();
+					//txtNombreActivPrecedida.setEnabled(true);
 				}else{
-					txtNombreActivPrecedida.setEnabled(false);
+					comboBoxNombrePrecedida.setEnabled(false);
+					//txtNombreActivPrecedida.setEnabled(false);
 				}
 				btnCrearActividad.setEnabled(true);
 			}
@@ -203,16 +203,25 @@ public class CrearActividadView {
 	    			if(!camposVaciosActividad2()){
 	        			String nombre = txtNombreActividad.getText();
 	        			String descripcion = txtDescripcionActividad.getText();
-	        			String nombreActividadPrecede = txtNombreActivPrecedida.getText();
+	        			String nombreActividadPrecede = comboBoxNombrePrecedida.getText();
 	        			if(rbtnActividadSi.getSelection()){
-	        				crearActividadViewController.crearActividadPosicionDeterminada(nombreProceso, nombreActividadPrecede, nombre,descripcion, true);
-	        				cargarNombresCombo();
-	        				limpiarCamposActividad();
+	        				
+	        				
+	        				if(crearActividadViewController.crearActividadPosicionDeterminada(nombreProceso, nombreActividadPrecede, nombre,descripcion, true)){
+	        					JOptionPane.showMessageDialog(null, "Actividad creada con exito.");		
+	        				}else{
+	        					JOptionPane.showMessageDialog(null, "Accion invalida\nactividades con el mismo nombre, la actividad no existe o el proceso no existe.");
+	        				}
 	        			}else{
-	        				crearActividadViewController.crearActividadPosicionDeterminada(nombreProceso, nombreActividadPrecede, nombre,descripcion, false);
-	        				cargarNombresCombo();
-	        				limpiarCamposActividad();
+	        				
+	        				if(crearActividadViewController.crearActividadPosicionDeterminada(nombreProceso, nombreActividadPrecede, nombre,descripcion, false)){
+	        					JOptionPane.showMessageDialog(null, "Actividad creada con exito.");		
+	        				}else{
+	        					JOptionPane.showMessageDialog(null, "Accion invalida\nactividades con el mismo nombre, la actividad no existe o el proceso no existe.");
+	        				}
+
 	        			}
+	        			
 	    			}else{
 	    				JOptionPane.showMessageDialog(null, "debe llenar todos los campos");
 	    			}
@@ -225,14 +234,23 @@ public class CrearActividadView {
                 			String nombre = txtNombreActividad.getText();
                 			String descripcion = txtDescripcionActividad.getText();
                 			if(rbtnActividadSi.getSelection()){
-                				 crearActividadViewController.crearActividadFin( nombreProceso, nombre,descripcion, true);
-                				 cargarNombresCombo();
-                				 limpiarCamposActividad();
+                				
+                				if(crearActividadViewController.crearActividadFin(nombreProceso, nombre,descripcion,true)){
+                					JOptionPane.showMessageDialog(null, "Actividad creada con exito.");		
+                				}else{
+                					JOptionPane.showMessageDialog(null, "Accion invalida\nactividades con el mismo nombre o el proceso no existe.");
+                				}
+
                 			}else{
-                				crearActividadViewController.crearActividadFin(nombreProceso, nombre,descripcion,false);
-                				cargarNombresCombo();
-                				limpiarCamposActividad();
+                				
+                				if(crearActividadViewController.crearActividadFin(nombreProceso, nombre,descripcion,false)){
+                					JOptionPane.showMessageDialog(null, "Actividad creada con exito.");		
+                				}else{
+                					JOptionPane.showMessageDialog(null, "Accion invalida\nactividades con el mismo nombre o el proceso no existe.");
+                				}
+
                 			}
+                			
                 			
                 		}else{
                 			JOptionPane.showMessageDialog(null, "debe llenar todos los campos");
@@ -246,15 +264,23 @@ public class CrearActividadView {
                 			String descripcion = txtDescripcionActividad.getText();
                 			
                 			if(rbtnActividadSi.getSelection()){
-                    			crearActividadViewController. crearDespuesUltimaActividadCreada(nombreProceso,nombre,descripcion,true);
-                    			cargarNombresCombo();
-                    			limpiarCamposActividad();
+                				
+                    			if(crearActividadViewController. crearDespuesUltimaActividadCreada(nombreProceso,nombre,descripcion,true)){
+                    				JOptionPane.showMessageDialog(null, "Actividad creada con exito.");		
+                    			}else{
+                    				JOptionPane.showMessageDialog(null, "Accion invalida\n actividades con el mismo nombre, aun no se crean actividades o el proceso no existe.");
+                    			}
+
                 			}else{
-                				crearActividadViewController. crearDespuesUltimaActividadCreada(nombreProceso,nombre,descripcion,false);
-                				cargarNombresCombo();
-                				limpiarCamposActividad();
+                				
+                    			if(crearActividadViewController. crearDespuesUltimaActividadCreada(nombreProceso,nombre,descripcion,false)){
+                    				JOptionPane.showMessageDialog(null, "Actividad creada con exito.");		
+                    			}else{
+                    				JOptionPane.showMessageDialog(null, "Accion invalida\n actividades con el mismo nombre, aun no se crean actividades o el proceso no existe.");
+                    			}
+
                 			}
-                		
+                			
                 			
                 		}else{
                 			JOptionPane.showMessageDialog(null, "debe llenar todos los campos");
@@ -263,15 +289,20 @@ public class CrearActividadView {
                     	
                     }
 	    		}
+	    		cargarNombresCombo();
+	    		limpiarCamposActividad();
 	    	}
 	    });
-		btnCrearActividad.setBounds(136, 270, 100, 25);
+		btnCrearActividad.setBounds(134, 345, 100, 25);
 		btnCrearActividad.setText("Crear");
 		btnCrearActividad.setEnabled(false);
 		
+		comboBoxNombrePrecedida = new Combo(grpDatosActividad, SWT.NONE);
+		comboBoxNombrePrecedida.setBounds(207, 160, 203, 23);
+		
 		Group grpDatosTarea = new Group(shlCrearActividad, SWT.NONE);
 		grpDatosTarea.setText("Datos tarea\r\n");
-		grpDatosTarea.setBounds(24, 358, 578, 417);
+		grpDatosTarea.setBounds(512, 10, 486, 393);
 		
 		Label lblDescripcion_1 = new Label(grpDatosTarea, SWT.NONE);
 		lblDescripcion_1.setBounds(51, 128, 72, 15);
@@ -322,6 +353,9 @@ public class CrearActividadView {
 		rbtnTareaNo.setBounds(332, 305, 90, 16);
 		rbtnTareaNo.setText("no");
 		
+		comboBoxNombreActividad = new Combo(grpDatosTarea, SWT.NONE);
+		comboBoxNombreActividad.setBounds(206, 76, 205, 23);
+		
 	    btnCrearTarea= new Button(grpDatosTarea, SWT.NONE);
 	    btnCrearTarea.addSelectionListener(new SelectionAdapter() {
 	    	@Override
@@ -329,84 +363,105 @@ public class CrearActividadView {
 	    		
 	    		if(comboBoxTipoCreacionTarea.getText().equalsIgnoreCase("crear posicion determinada")){
 	    			
-	    			if(!comboBoxNombreActividad.getText().equalsIgnoreCase("")){
+	    			if(!(comboBoxNombreActividad.getText().equalsIgnoreCase(""))){
                           
-	    				if(camposVaciosActividad2()){
+	    				if(!camposVaciosTarea2()){
 
 	    					if(rbtnTareaSi.getSelection()){
-			    				Proceso p = lista.obtenerProceso(nombreProceso);
-			    				String nombreActividad = comboBoxNombreActividad.getText();
-				    			Actividad act = p.getConjuntoActividades().buscarActividad(nombreActividad);
-				    			int pos = Integer.parseInt(txtPosicionTarea.getText().trim());
-				    			String descripcion = txtDescripcionTarea.getText();
-				    			int tiempoMin = Integer.parseInt(txtTiempoMin.getText().trim());
-				    			int tiempoMax = Integer.parseInt(txtTiempoMax.getText().trim());
-				    			Tarea tarea = new Tarea(descripcion, true, tiempoMax, tiempoMin);
-				    			act.getConjuntoTareas().insertarPosDeterminada(tarea, pos);
+
+	   
+	    						if( crearActividadViewController.crearTareaPosDeterminada(nombreProceso,comboBoxNombreActividad.getText()
+	    								,Integer.parseInt(txtPosicionTarea.getText().trim()),txtDescripcionTarea.getText(),true,Integer.parseInt(txtTiempoMax.getText().trim())
+	    								,Integer.parseInt(txtTiempoMin.getText().trim()))  ) {
+	    							
+	    							JOptionPane.showMessageDialog(null, "tarea creada con exito.");
+	    							
+	    						}else{
+	    							JOptionPane.showMessageDialog(null, "Accion invalida\n tareas No obligatorias seguidas, actividad no existe o el proceso no existe.");
+	    						}
 				    			limpiarCamposTarea();
 	    					}else{
-			    				Proceso p = lista.obtenerProceso(nombreProceso);
-			    				String nombreActividad = comboBoxNombreActividad.getText();
-				    			Actividad act = p.getConjuntoActividades().buscarActividad(nombreActividad);
-				    			int pos = Integer.parseInt(txtPosicionTarea.getText().trim());
-				    			String descripcion = txtDescripcionTarea.getText();
-				    			int tiempoMin = Integer.parseInt(txtTiempoMin.getText().trim());
-				    			int tiempoMax = Integer.parseInt(txtTiempoMax.getText().trim());
-				    			Tarea tarea = new Tarea(descripcion, false, tiempoMax, tiempoMin);
-				    			act.getConjuntoTareas().insertarPosDeterminada(tarea, pos);
+	    						if( crearActividadViewController.crearTareaPosDeterminada(nombreProceso,comboBoxNombreActividad.getText()
+	    								,Integer.parseInt(txtPosicionTarea.getText().trim()),txtDescripcionTarea.getText(),false,Integer.parseInt(txtTiempoMax.getText().trim())
+	    								,Integer.parseInt(txtTiempoMin.getText().trim()))  ) {
+	    							
+	    							JOptionPane.showMessageDialog(null, "tarea creada con exito.");
+	    							
+	    						}else{
+	    							JOptionPane.showMessageDialog(null, "Accion invalida\n tareas No obligatorias seguidas, actividad no existe o el proceso no existe.");
+	    						}
 				    			limpiarCamposTarea();
+
 	    					}
+	    					
+	    					
 	    						
 	    				}else{
-	    					System.out.println("debe llenar todos los campos");
+	    					JOptionPane.showMessageDialog(null, "debe llenar todos los campos");
+	    					
 	    				}
 		    			
 	    			}else{
-	    				System.out.println("debe seleccionar una actividad");
+	    				JOptionPane.showMessageDialog(null, "debe seleccionar una actividad");
+	    				
 	    			}
 	    			
 	    		}else{
+	    			//se crea al final
 	    			if(!comboBoxNombreActividad.getText().equalsIgnoreCase("")){
 	    			
-    				if(camposVaciosActividad1()){
+    				if(!camposVaciosTarea1()){
 
     					if(rbtnTareaSi.getSelection()){
-		    				Proceso p = lista.obtenerProceso(nombreProceso);
-		    				String nombreActividad = comboBoxNombreActividad.getText();
-			    			Actividad act = p.getConjuntoActividades().buscarActividad(nombreActividad);
-			    			String descripcion = txtDescripcionTarea.getText();
-			    			int tiempoMin = Integer.parseInt(txtTiempoMin.getText().trim());
-			    			int tiempoMax = Integer.parseInt(txtTiempoMax.getText().trim());
-			    			Tarea tarea = new Tarea(descripcion, true, tiempoMax, tiempoMin);
-			    			act.getConjuntoTareas().insertarFinal(tarea);
+
+    						if( crearActividadViewController.creaeTareaFin(nombreProceso,comboBoxNombreActividad.getText()
+    								,txtDescripcionTarea.getText(),true,Integer.parseInt(txtTiempoMax.getText().trim())
+    								,Integer.parseInt(txtTiempoMin.getText().trim()) ) ){
+    					
+    							JOptionPane.showMessageDialog(null, "tarea creada con exito.");
+    							
+    						}else{
+    							JOptionPane.showMessageDialog(null, "Accion invalida\n tareas No obligatorias seguidas, actividad no existe o el proceso no existe.");
+    						}
 			    			limpiarCamposTarea();
     					}else{
-		    				Proceso p = lista.obtenerProceso(nombreProceso);
-		    				String nombreActividad = comboBoxNombreActividad.getText();
-			    			Actividad act = p.getConjuntoActividades().buscarActividad(nombreActividad);
-			    			String descripcion = txtDescripcionTarea.getText();
-			    			int tiempoMin = Integer.parseInt(txtTiempoMin.getText().trim());
-			    			int tiempoMax = Integer.parseInt(txtTiempoMax.getText().trim());
-			    			Tarea tarea = new Tarea(descripcion, false, tiempoMax, tiempoMin);
-			    			act.getConjuntoTareas().insertarFinal(tarea);
+     						if( crearActividadViewController.creaeTareaFin(nombreProceso,comboBoxNombreActividad.getText()
+    								,txtDescripcionTarea.getText(),false,Integer.parseInt(txtTiempoMax.getText().trim())
+    								,Integer.parseInt(txtTiempoMin.getText().trim()) ) ){
+    					
+    							JOptionPane.showMessageDialog(null, "tarea creada con exito.");
+    							
+    						}else{
+    							JOptionPane.showMessageDialog(null, "Accion invalida\n tareas No obligatorias seguidas, actividad no existe o el proceso no existe.");
+    						}
 			    			limpiarCamposTarea();
+
     					}
-    						
+    					
     				}else{
-    					System.out.println("debe llenar todos los campos");
+    					JOptionPane.showMessageDialog(null, "debe llenar todos los campos");
+   
     				}
 	    			}else{
-	    				System.out.println("debe seleccionar una actividad");
+	    				JOptionPane.showMessageDialog(null, "debe seleccionar una actividad");
+	    				
 	    			}
 	    		}
 	    	}
 	    });
-		btnCrearTarea.setBounds(141, 348, 100, 25);
+		btnCrearTarea.setBounds(110, 348, 100, 25);
 		btnCrearTarea.setText("Crear ");
 		btnCrearTarea.setEnabled(false);
 		
 		Button btnLimpiarTarea = new Button(grpDatosTarea, SWT.NONE);
-		btnLimpiarTarea.setBounds(348, 348, 100, 25);
+		btnLimpiarTarea.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				limpiarCamposTarea();
+			}
+		});
+		btnLimpiarTarea.setBounds(306, 348, 100, 25);
 		btnLimpiarTarea.setText("Limpiar");
 		
 		txtPosicionTarea = new Text(grpDatosTarea, SWT.BORDER);
@@ -442,8 +497,17 @@ public class CrearActividadView {
 		lblActividad.setBounds(50, 79, 55, 15);
 		lblActividad.setText("Actividad");
 		
-		comboBoxNombreActividad = new Combo(grpDatosTarea, SWT.NONE);
-		comboBoxNombreActividad.setBounds(206, 76, 205, 23);
+		Button btnAtras_1 = new Button(shlCrearActividad, SWT.NONE);
+		btnAtras_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ConfigurarProcesoView configurarProcesoView = new ConfigurarProcesoView();
+				shlCrearActividad.close();
+				configurarProcesoView.open();
+			}
+		});
+		btnAtras_1.setBounds(455, 429, 100, 25);
+		btnAtras_1.setText("Atras");
 		cargarNombresCombo();
 
 	}
@@ -467,7 +531,7 @@ public class CrearActividadView {
 	}
 	
 	public void limpiarCamposTarea(){
-		comboBoxNombreActividad.removeAll();
+		//comboBoxNombreActividad.removeAll();
 		txtDescripcionTarea.setText("");
 		txtTiempoMax.setText("");
 		txtTiempoMin.setText("");
@@ -487,10 +551,30 @@ public class CrearActividadView {
 	}
 	
 	public boolean camposVaciosActividad2(){
-		if(txtNombreActividad.getText().equalsIgnoreCase("") || txtDescripcionActividad.getText().equalsIgnoreCase("") || txtNombreActivPrecedida.getText().equalsIgnoreCase("")){
+		if(txtNombreActividad.getText().equalsIgnoreCase("") || txtDescripcionActividad.getText().equalsIgnoreCase("") || comboBoxNombrePrecedida.getText().equalsIgnoreCase("")){
 			return true;
 		}else{
 			return false;
+		}
+	}
+	
+	public boolean camposVaciosTarea(){
+		
+		if(comboBoxNombreActividad.getText().equalsIgnoreCase("") || txtDescripcionActividad.getText().equalsIgnoreCase("") || 
+				txtTiempoMax.getText().equalsIgnoreCase("") || txtTiempoMin.getText().equalsIgnoreCase("") || txtPosicionTarea.getText().equalsIgnoreCase("")){
+			return true;
+		}else{
+		return false;
+		}
+	}
+	
+	public void cargarNombreActividad(){
+		comboBoxNombrePrecedida.removeAll();
+		Proceso p = lista.obtenerProceso(nombreProceso);
+		NodoDoble<Actividad> puntero = p.getConjuntoActividades().getCabeza();
+		while(puntero!=null){
+			comboBoxNombrePrecedida.add(puntero.getValorNodo().getNombre());
+			puntero=puntero.getSiguiente();
 		}
 	}
 	
@@ -509,7 +593,7 @@ public class CrearActividadView {
 
 		txtNombreActividad.setText("");
 		txtDescripcionActividad.setText("");
-		txtNombreActivPrecedida.setText("");
+		//txtNombreActivPrecedida.setText("");
 		rbtnActividadNo.setSelection(false);
 		rbtnActividadSi.setSelection(false);
 	}

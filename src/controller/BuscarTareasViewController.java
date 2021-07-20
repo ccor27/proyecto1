@@ -33,9 +33,14 @@ public class BuscarTareasViewController {
 	      return modelFactoryController.buscarTareaActual(descripcionTarea,nombreProceso);	
 	}
 
-	public Tarea buscarTareaInicio(String descripcionTarea, String nombreProceso) {
+	public Tarea buscarTareaInicio(String nombreProceso, String descripcionTarea) {
 		
-		return modelFactoryController.buscarTareaInicio(descripcionTarea,nombreProceso);
+		return modelFactoryController.buscarTareaInicio(nombreProceso,descripcionTarea);
+	}
+
+	public String obtenerNombreActivadActual(String nombreProceso) {
+		
+		return modelFactoryController.obtenerNombreActividadActual(nombreProceso);
 	}
 
 }

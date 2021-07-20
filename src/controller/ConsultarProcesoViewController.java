@@ -20,12 +20,12 @@ public class ConsultarProcesoViewController {
 		this.listaProceso = listaProceso;
 	}
 
-	public double calcularTiempoMin(String nombreProceso) {
+	public int calcularTiempoMin(String nombreProceso) {
 		// TODO Auto-generated method stub
 		return controller.calcularTiempoMinProceso(nombreProceso);
 	}
 	
-	public double calcularTiempoMax(String nombreProceso) {
+	public int calcularTiempoMax(String nombreProceso) {
 		// TODO Auto-generated method stub
 		return controller.calcularTiempoMaxProceso(nombreProceso);
 	}

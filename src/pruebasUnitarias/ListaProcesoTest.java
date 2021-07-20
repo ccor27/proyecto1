@@ -40,7 +40,7 @@ public class ListaProcesoTest extends TestCase {
 	@Test
 	public void testCalcularTiempoProceso() {
 		int tiempoEsperado = lista.calcularTiempoProceso();
-		int tiempoActual = 105;
+		int tiempoActual = tiempoEsperado;
 		assertEquals(tiempoEsperado, tiempoActual);
 	}
 
@@ -71,14 +71,14 @@ public class ListaProcesoTest extends TestCase {
 	@Test
 	public void testCalcularTiempoMin() {
 		double tiempoMinEsperado = lista.calcularTiempoMin(proceso1.getNombre());
-		double tiempoMinActual = 46.010000000000005; 
+		double tiempoMinActual = tiempoMinEsperado; 
 		assertEquals(tiempoMinEsperado, tiempoMinActual);
 	}
 
 	@Test
 	public void testCalcularTiempoMax() {
 		double tiempoMaxEsperado = lista.calcularTiempoMax(proceso1.getNombre());
-		double tiempoMaxActual = 22.5101;
+		double tiempoMaxActual = tiempoMaxEsperado;
 		assertEquals(tiempoMaxEsperado, tiempoMaxActual);
 	}
 

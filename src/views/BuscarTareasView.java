@@ -44,8 +44,11 @@ public class BuscarTareasView {
 	private Text txtMinimo;
 	private Text txtObligatorio;
 	String nombreActividad;
-	private Text txtDecsripTarea;
 	private Text txtVeces;
+	private Button btnBuscarDadoNombre;
+	private Button btnBuscarActual;
+	private Button btnBuscarInicio;
+	private Combo comboDescripTarea;
 	/**
 	 * Launch the application.
 	 * @param args
@@ -65,7 +68,7 @@ public class BuscarTareasView {
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
-		cargarDatosComboBox();
+		cargarNombreProcesosComboBox();
 		shlBuscarTareas.open();
 		shlBuscarTareas.layout();
 		while (!shlBuscarTareas.isDisposed()) {
@@ -82,6 +85,8 @@ public class BuscarTareasView {
 		shlBuscarTareas = new Shell();
 		shlBuscarTareas.setSize(680, 565);
 		shlBuscarTareas.setText("Buscar Tareas");
+		
+		
 		
 		Group grpDetalleTarea = new Group(shlBuscarTareas, SWT.NONE);
 		grpDetalleTarea.setText("Detalle Tarea");
@@ -143,66 +148,63 @@ public class BuscarTareasView {
 		btnAtras.setText("Atras");
 		
 		Group grpBuscar = new Group(shlBuscarTareas, SWT.NONE);
-		grpBuscar.setText("Buscar");
+		grpBuscar.setText("Buscar Tarea");
 		grpBuscar.setBounds(10, 10, 627, 247);
 		
 		Label lblProcesos = new Label(grpBuscar, SWT.NONE);
-		lblProcesos.setBounds(10, 28, 68, 19);
+		lblProcesos.setBounds(319, 67, 68, 19);
 		lblProcesos.setText("Procesos");
 		
 		Label lblIngreseLaActividad = new Label(grpBuscar, SWT.NONE);
-		lblIngreseLaActividad.setBounds(10, 82, 103, 15);
+		lblIngreseLaActividad.setBounds(10, 121, 103, 15);
 		lblIngreseLaActividad.setText("nombre actividad");
 		
 		comboBoxNombreProceso = new Combo(grpBuscar, SWT.NONE);
-		comboBoxNombreProceso.setBounds(121, 25, 170, 23);
+		comboBoxNombreProceso.setBounds(421, 64, 170, 23);
 		
 		comboBoxNombreActividad = new Combo(grpBuscar, SWT.NONE);
-		comboBoxNombreActividad.setBounds(121, 79, 170, 23);
+		comboBoxNombreActividad.setBounds(121, 118, 170, 23);
 		
-		Button btnBuscarDadoNombre = new Button(grpBuscar, SWT.NONE);
+		btnBuscarDadoNombre = new Button(grpBuscar, SWT.NONE);
 		btnBuscarDadoNombre.setBounds(30, 200, 144, 25);
 		btnBuscarDadoNombre.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-//				Tarea tarea;
-//
-//				
-//				if (textUno.getText().equalsIgnoreCase("") || comboBoxNombreActividad.getText()==null && comboBoxNombreProceso.getText()==null) {
-//					JOptionPane.showMessageDialog(null, "Ingrese Todos los Campos");
-//				}else {
-//					Proceso proceso= lista.obtenerProceso(comboBoxNombreProceso.getText());
-//					Actividad actividad = proceso.getConjuntoActividades().buscarActividad(comboBoxNombreActividad.getText());
-//					tarea= buscarTareasViewController.buscarTareaDadoSuNombre(actividad, textUno.getText(), proceso);
-//					txtDescripcion.setText(tarea.getDescripcion());
-//					
-//						txtObligatorio.setText(String.valueOf(tarea.getEsObligatorio()));
-//						txtMinimo.setText((String.valueOf(tarea.getTiempoMin())));
-//						txtMaximo.setText((String.valueOf(tarea.getTiempoMax())));
-//					
-//
-//				}
-		        Tarea tarea;
-				String nombreProceso = comboBoxNombreProceso.getText();
-				String nombreActividad = comboBoxNombreActividad.getText();
-				String descripcionTarea = txtDecsripTarea.getText();
-				if(nombreProceso.equalsIgnoreCase("")||nombreActividad.equalsIgnoreCase("")||descripcionTarea.equalsIgnoreCase("")){
-					JOptionPane.showMessageDialog(null, "falto por ingresear la descripcion o seleccionar la actividad o el proceso");
+
+				if(!(comboDescripTarea.getText().equalsIgnoreCase("") || comboBoxNombreProceso.getText().equalsIgnoreCase("") 
+						|| comboBoxNombreActividad.getText().equalsIgnoreCase(""))){
+					
+					Tarea tarea = buscarTareasViewController.buscarTareaNombreDado(comboBoxNombreActividad.getText(),comboDescripTarea.getText(),comboBoxNombreProceso.getText());
+					if(tarea!=null){
+						mostrar(tarea);
+					}else{
+						JOptionPane.showMessageDialog(null, "la tarea no existe en el proceso.");
+					}
+					
 				}else{
-				     tarea = buscarTareasViewController.buscarTareaNombreDado(nombreActividad,descripcionTarea,nombreProceso);
-				     if(tarea==null){
-				    	 JOptionPane.showMessageDialog(null, "la tarea no existe");
-				     }else{
-				    	 mostrar(tarea);
-				    	 limpiar();
-				     }
+					JOptionPane.showMessageDialog(null, "debe seleccionar el nombre del proceso y \n el nombre de la actividad");
 				}
+//		        Tarea tarea;
+//				String nombreProceso = comboBoxNombreProceso.getText();
+//				String nombreActividad = comboBoxNombreActividad.getText();
+//				String descripcionTarea = txtDecsripTarea.getText();
+//				if(nombreProceso.equalsIgnoreCase("")||nombreActividad.equalsIgnoreCase("")||descripcionTarea.equalsIgnoreCase("")){
+//					JOptionPane.showMessageDialog(null, "falto por ingresear la descripcion o seleccionar la actividad o el proceso");
+//				}else{
+//				     tarea = buscarTareasViewController.buscarTareaNombreDado(nombreActividad,descripcionTarea,nombreProceso);
+//				     if(tarea==null){
+//				    	 JOptionPane.showMessageDialog(null, "la tarea no existe");
+//				     }else{
+//				    	 mostrar(tarea);
+//				    	 limpiar();
+//				     }
+//				}
 		}
 				
 		});
 		btnBuscarDadoNombre.setText("Buscar dada su nombre");
 		
-		Button btnBuscarActual = new Button(grpBuscar, SWT.NONE);
+		btnBuscarActual = new Button(grpBuscar, SWT.NONE);
 		btnBuscarActual.setBounds(243, 200, 144, 25);
 		btnBuscarActual.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -225,13 +227,13 @@ public class BuscarTareasView {
 //				}
 				Tarea tarea;
 				String nombreProceso = comboBoxNombreProceso.getText();
-				String descripcionTarea = txtDecsripTarea.getText();
+				String descripcionTarea = comboDescripTarea.getText();
 				if(nombreProceso.equalsIgnoreCase("")||descripcionTarea.equalsIgnoreCase("")){
 					JOptionPane.showMessageDialog(null, "seleccione un proceso");	
 				}else{
 					tarea = buscarTareasViewController.buscarTareaActual(descripcionTarea,nombreProceso);
 				     if(tarea==null){
-				    	 JOptionPane.showMessageDialog(null, "la tarea no existe");
+				    	 JOptionPane.showMessageDialog(null, "la tarea no existe en el proceso.");
 				     }else{
 				    	 mostrar(tarea);
 				    	 limpiar();
@@ -242,68 +244,109 @@ public class BuscarTareasView {
 		});
 		btnBuscarActual.setText("Buscar desde actual");
 		
-		Button btnBuscarInicio = new Button(grpBuscar, SWT.NONE);
+		btnBuscarInicio = new Button(grpBuscar, SWT.NONE);
 		btnBuscarInicio.setBounds(447, 200, 144, 25);
 		btnBuscarInicio.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-//				Tarea tarea;
-//				
-//				if (comboBoxNombreProceso.getText().equalsIgnoreCase("") || text_BuscarDos.getText().equalsIgnoreCase("")) {
-//					JOptionPane.showMessageDialog(null, "Ingrese Todos los Campos");
-//				}else {
-//					Proceso proceso= lista.obtenerProceso(comboBoxNombreProceso.getText());
-//					String buscar= text_BuscarDos.getText();
-//					tarea = buscarTareasViewController.buscarTareaInicio(proceso, buscar);
-//					
-//					txtDescripcion.setText(tarea.getDescripcion());
-//					txtObligatorio.setText(String.valueOf(tarea.getEsObligatorio()));
-//					txtMinimo.setText((String.valueOf(tarea.getTiempoMin())));
-//					txtMaximo.setText((String.valueOf(tarea.getTiempoMax())));
-//					
-//				}
-				Tarea tarea;
-				String nombreProceso = comboBoxNombreProceso.getText();
-				String descripcionTarea = txtDecsripTarea.getText();
-				if(nombreProceso.equalsIgnoreCase("")||descripcionTarea.equalsIgnoreCase("")){
-					JOptionPane.showMessageDialog(null, "seleccione un proceso");	
-				}else{
-					tarea = buscarTareasViewController.buscarTareaInicio(descripcionTarea,nombreProceso);
-				     if(tarea==null){
-				    	 JOptionPane.showMessageDialog(null, "la tarea no existe");
-				     }else{
-				    	 mostrar(tarea);
-				    	 limpiar();
-				     }
-				}
 				
+				if(!(comboBoxNombreProceso.getText().equalsIgnoreCase("") || comboDescripTarea.getText().equalsIgnoreCase(""))){
+					Tarea tarea = buscarTareasViewController.buscarTareaInicio(comboBoxNombreProceso.getText(),comboDescripTarea.getText());
+					if(tarea!=null){
+						mostrar(tarea);
+					}else{
+						JOptionPane.showMessageDialog(null, "la tarea no existe en el proceso.");
+					}
+					
+				}else{
+					JOptionPane.showMessageDialog(null, "eliga un proceso y escriba la descripcion\n de la tarea por favor.");
+				}
 			}
 		});
 		btnBuscarInicio.setText("Buscar desde el inicio");
 		
 		Label lblDescripcionTarea = new Label(grpBuscar, SWT.NONE);
-		lblDescripcionTarea.setBounds(10, 140, 103, 15);
+		lblDescripcionTarea.setBounds(322, 121, 93, 15);
 		lblDescripcionTarea.setText("Descripcion tarea");
 		
-		txtDecsripTarea = new Text(grpBuscar, SWT.BORDER);
-		txtDecsripTarea.setBounds(121, 134, 170, 21);
+		Label lblComoDeseaBuscar = new Label(grpBuscar, SWT.NONE);
+		lblComoDeseaBuscar.setBounds(10, 67, 104, 15);
+		lblComoDeseaBuscar.setText("Como desea buscar");
+		
+		Combo comboBoxTipoBusqueda = new Combo(grpBuscar, SWT.NONE);
+		comboBoxTipoBusqueda.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				if(comboBoxTipoBusqueda.getText().equalsIgnoreCase("desde el inicio")){
+					//txtDecsripTarea.setEnabled(true);
+					comboDescripTarea.setEnabled(true);
+					comboBoxNombreActividad.setEnabled(false);
+					comboBoxNombreProceso.setEnabled(true);
+					btnBuscarActual.setEnabled(false);
+					btnBuscarDadoNombre.setEnabled(false);
+					btnBuscarInicio.setEnabled(true);
+				
+					
+				}else{
+					if(comboBoxTipoBusqueda.getText().equalsIgnoreCase("desde la actividad actual")){
+						//txtDecsripTarea.setEnabled(true);
+						comboDescripTarea.setEnabled(true);
+						comboBoxNombreActividad.setEnabled(false);
+						comboBoxNombreProceso.setEnabled(true);
+						btnBuscarActual.setEnabled(true);
+						btnBuscarDadoNombre.setEnabled(false);
+						btnBuscarInicio.setEnabled(false);
+						
+					}else{
+						
+						//txtDecsripTarea.setEnabled(true);
+						comboDescripTarea.setEnabled(true);
+						comboBoxNombreActividad.setEnabled(true);
+						comboBoxNombreProceso.setEnabled(true);
+						btnBuscarActual.setEnabled(false);
+						btnBuscarDadoNombre.setEnabled(true);
+						btnBuscarInicio.setEnabled(false);
+						
+					}
+				}
+			}
+		});
+		comboBoxTipoBusqueda.setItems(new String[] {"Desde el inicio", "Desde la actividad actual", "Desde una actividad dado su nombre"});
+		comboBoxTipoBusqueda.setBounds(121, 67, 170, 23);
+		
+		comboDescripTarea = new Combo(grpBuscar, SWT.NONE);
+		comboDescripTarea.setBounds(421, 118, 170, 23);
 		comboBoxNombreActividad.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				nombreActividad = comboBoxNombreActividad.getText();
+				cargarDescripcion();
 				
 			}
 		});
 		comboBoxNombreProceso.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				
 				nombreProceso = comboBoxNombreProceso.getText();
 				cargarNombresActividad();
+				if(comboBoxTipoBusqueda.getText().equalsIgnoreCase("Desde la actividad actual")){
+					nombreActividad = buscarTareasViewController.obtenerNombreActivadActual(nombreProceso);
+					cargarDescripcion();
+				}else{
+					if(comboBoxTipoBusqueda.getText().equalsIgnoreCase("Desde el inicio")){
+					cargarDescripcion2();	
+					}
+				}
+				
+				
+				
 			}
 		});
-
+		camposAlIniciar();
 	}
-	public void cargarDatosComboBox(){
+	public void cargarNombreProcesosComboBox(){
 		
 		Nodo<Proceso> puntero = lista.getInicio();
 		while(puntero!=null){
@@ -326,6 +369,16 @@ public class BuscarTareasView {
         }
 	}
 	
+	public void camposAlIniciar(){
+		comboBoxNombreActividad.setEnabled(false);
+		comboBoxNombreProceso.setEnabled(false);
+		btnBuscarActual.setEnabled(false);
+		btnBuscarDadoNombre.setEnabled(false);
+		btnBuscarInicio.setEnabled(false);
+		txtVeces.setEnabled(false);
+		txtVeces.setEditable(false);
+	}
+	
 	public void mostrar(Tarea tarea){
 		txtDescripcion.setText(tarea.getDescripcion());
 		txtMaximo.setText(tarea.getTiempoMax()+"");
@@ -333,8 +386,35 @@ public class BuscarTareasView {
 		txtObligatorio.setText(String.valueOf(tarea.getEsObligatorio()));
 	}
 	
-	public void limpiar(){
-		txtDecsripTarea.setText("");
+	public void cargarDescripcion(){
+		comboDescripTarea.removeAll();
+		Proceso p = lista.obtenerProceso(comboBoxNombreProceso.getText());
+		Actividad a = p.getConjuntoActividades().buscarActividad(nombreActividad);
+		//Tarea t = a.getConjuntoTareas().getInicio().getValorNodo();
+		Nodo<Tarea> t = a.getConjuntoTareas().getInicio();
+		while(t!=null){
+			comboDescripTarea.add(t.getValorNodo().getDescripcion());
+			t=t.getSiguiente();
+			
+		}
 	}
+	public void cargarDescripcion2(){
+		comboDescripTarea.removeAll();
+		Proceso p = lista.obtenerProceso(comboBoxNombreProceso.getText());
+		NodoDoble<Actividad> act = p.getConjuntoActividades().getCabeza();
+		while(act!=null){
+			Nodo<Tarea> t = act.getValorNodo().getConjuntoTareas().getInicio();
+			while(t!=null){
+				comboDescripTarea.add(t.getValorNodo().getDescripcion());
+				t=t.getSiguiente();
+				
+			}
+			act=act.getSiguiente();
+		}
 
+	}
+	
+	public void limpiar(){
+		//txtDecsripTarea.setText("");
+	}
 }

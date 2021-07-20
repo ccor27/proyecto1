@@ -25,7 +25,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class ProcesoView {
+public class CrearProcesoView {
 
 	ProcesoViewController procesoViewController = new ProcesoViewController();
 	private ListaProceso lista= procesoViewController.getListaProceso();
@@ -42,7 +42,7 @@ public class ProcesoView {
 	 */
 	public static void main(String[] args) {
 		try {
-			ProcesoView window = new ProcesoView();
+			CrearProcesoView window = new CrearProcesoView();
 			window.open();
 			
 		} catch (Exception e) {
@@ -99,15 +99,34 @@ public class ProcesoView {
 			public void widgetSelected(SelectionEvent e) {
                 
 				if(!camposVacios()){
-					int id= Integer.parseInt(txtId.getText());
-					String nombre = txtNombre.getText();
-					
-					procesoViewController.crearProceso(id,nombre);
-					cargarDatosTablaProceso();
-					limpiarCampos();
+
+					if(!existenciaProceso()){
+						int id= Integer.parseInt(txtId.getText());
+						String nombre = txtNombre.getText();
+						
+						procesoViewController.crearProceso(id,nombre);
+						cargarDatosTablaProceso();
+						limpiarCampos();
+						JOptionPane.showMessageDialog(null, "proceso creado con exito.");
+					}else{
+						JOptionPane.showMessageDialog(null, "no puede repetir nombres o Id de los procesos.");
+					}
 				}else{
 					JOptionPane.showMessageDialog(null, "debe llenar todos los campos");
 				}
+			}
+
+			private boolean existenciaProceso(){
+				Nodo<Proceso> p = lista.getInicio();
+				boolean centinela = false;
+				while (p!=null) {
+					if(p.getValorNodo().getNombre().equalsIgnoreCase(txtNombre.getText()) || p.getValorNodo().getId()==Integer.parseInt(txtId.getText())){
+						centinela = true;
+						break;
+					}
+					p=p.getSiguiente();
+				}
+				return centinela;
 			}
 		});
 		btnCrear.setBounds(441, 18, 75, 25);

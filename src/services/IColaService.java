@@ -5,10 +5,10 @@ import modelo.Tarea;
 
 public interface IColaService {
 
-	void insertarFinal(Tarea tarea);
+	boolean insertarFinal(Tarea tarea);
 	Nodo<Tarea> sacarPorElInicio();
-	void insertarPosDeterminada(Tarea tarea, int indice);
+	boolean insertarPosDeterminada(Tarea tarea, int indice);
 	Tarea buscarTarea(String descrp);
-	void insertarInicio(Tarea tarea);
+	boolean insertarInicio(Tarea tarea);
 
 }

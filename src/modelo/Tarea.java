@@ -10,14 +10,14 @@ public class Tarea implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String descripcion;
 	private boolean esObligatorio;
-	private double tiempoMax;
-	private double tiempoMin;
-	private double tiempo;
+	private int tiempoMax;
+	private int tiempoMin;
+	private int tiempo;
 	
 	public Tarea(){
 		
 	}
-	public Tarea(String descripcion, boolean esObligatorio, double tiempoMax, double tiempoMin){
+	public Tarea(String descripcion, boolean esObligatorio, int tiempoMax, int tiempoMin){
 		this.descripcion = descripcion;
 		this.esObligatorio = esObligatorio;
 		this.tiempoMax = tiempoMax;
@@ -28,7 +28,7 @@ public class Tarea implements Serializable{
 	public double getTiempo() {
 		return tiempo;
 	}
-	public void setTiempo(double tiempo) {
+	public void setTiempo(int tiempo) {
 		this.tiempo = tiempo;
 	}
 	public String getDescripcion() {
@@ -46,18 +46,19 @@ public class Tarea implements Serializable{
 	public double getTiempoMax() {
 		return tiempoMax;
 	}
-	public void setTiempoMax(double tiempoMax) {
+	public void setTiempoMax(int tiempoMax) {
 		this.tiempoMax = tiempoMax;
 	}
 	public double getTiempoMin() {
 		return tiempoMin;
 	}
-	public void setTiempoMin(double tiempoMin) {
+	public void setTiempoMin(int tiempoMin) {
 		this.tiempoMin = tiempoMin;
 	}
 	@Override
 	public String toString() {
-		return "     Tarea: "+"\n"+"        "+descripcion+"\n"+"        "+tiempo+"\n"+"  "+"\n";
+		return "     Tarea: "+"\n"+"        "+"descripcion: "+descripcion+"\n"+"        "+"tiempo: "+tiempo+"\n"+
+	                "        tiempo min: "+tiempoMin+"\n"+"        tiempo max: "+tiempoMax+"\n"+"\n";
 	}
 	
 	

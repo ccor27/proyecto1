@@ -24,8 +24,11 @@ public class ListaActividad implements IListaActividadService, Serializable{
 		this.fin=null;
 	}
 	
+	/**
+	 * metodo para insertar una actividad al inicio de la lista
+	 */
 	@Override
-	public void insertarInicio(Actividad actividad){
+	public boolean insertarInicio(Actividad actividad){
 		
 		NodoDoble<Actividad> nodo = new NodoDoble<Actividad>(actividad);
 		
@@ -33,6 +36,7 @@ public class ListaActividad implements IListaActividadService, Serializable{
         	cabeza = fin = nodo;
         	nombreUltimaActivdad = actividad.getNombre();
         	longitud++;
+        	return true;
         }else{
             if(!verificarRepetido(actividad.getNombre())){
                cabeza.setAnterior(nodo);
@@ -40,20 +44,28 @@ public class ListaActividad implements IListaActividadService, Serializable{
                cabeza = nodo;
                nombreUltimaActivdad = actividad.getNombre();
                longitud++;
+               return true;
             }else{
-            	JOptionPane.showMessageDialog(null, "no puede ingresar actividades con el mismo nombre");
+            	//JOptionPane.showMessageDialog(null, "no puede ingresar actividades con el mismo nombre");
+            	return false;
             }
         }
 		
 	}
+	/**
+	 * metodo para verificar que una actividad no se agregue 2 veces
+	 * @param nombre
+	 * @return centinela
+	 */
 	private boolean verificarRepetido(String nombre){
-	
+	System.out.println("entro al metodo de verificarrepetido");
 		NodoDoble<Actividad> nodo = cabeza;
 	 boolean centinela = false;
 	 
-	 while(nodo.getSiguiente()!=null){
+	 while(nodo!=null){
 		
 		 if(nodo.getValorNodo().getNombre().equalsIgnoreCase(nombre)){
+			 System.out.println("hay nombres repetidos");
 			 centinela = true;
 		 }
 		 nodo=nodo.getSiguiente();
@@ -63,73 +75,96 @@ public class ListaActividad implements IListaActividadService, Serializable{
 	}
 	
 	/**
-	 * precede = anterior
-	 * insertar una actividad
+	 *  metodo para insertar una actividad en una posicion determinada
 	 * @param actividad
 	 * @param nombre
+	 * @return 
 	 */
 	@Override
-	public void insertarPosDeterminada(Actividad actividad, String nombre){
+	public boolean insertarPosDeterminada(Actividad actividad, String nombre){
 		NodoDoble<Actividad> nodoNuevo = new NodoDoble<Actividad>(actividad);
 		NodoDoble<Actividad> nodo =buscarNodoActividad(nombre);
 		if(nodo!=null){
-           
-			if(nodo==cabeza){
 
-				if(!verificarRepetido(actividad.getNombre())){
-
-	  				NodoDoble<Actividad> aux = cabeza.getSiguiente();
-	  				cabeza.setSiguiente(nodoNuevo);
-	  				nodoNuevo.setAnterior(cabeza);
-	  				nodoNuevo.setSiguiente(aux);
-	  				aux.setAnterior(nodoNuevo);
-				}else{
-	  				JOptionPane.showMessageDialog(null, "no puede ingresar actividades con el mismo nombre");
-				}
-
+			if(nodo==cabeza && cabeza.getSiguiente()==null){
+				cabeza.setSiguiente(nodoNuevo);
+				nodoNuevo.setAnterior(cabeza);
+				fin = nodoNuevo;
+				longitud++;
+				nombreUltimaActivdad = nodoNuevo.getValorNodo().getNombre();
+				return true;
 				
 			}else{
 				
-				if(nodo==fin){
-					
+				if(nodo==cabeza){
+
 					if(!verificarRepetido(actividad.getNombre())){
-						fin.setSiguiente(nodoNuevo);
-						nodoNuevo.setAnterior(fin);
-						fin=nodoNuevo;
+
+		  				NodoDoble<Actividad> aux = cabeza.getSiguiente();
+		  				cabeza.setSiguiente(nodoNuevo);
+		  				nodoNuevo.setAnterior(cabeza);
+		  				nodoNuevo.setSiguiente(aux);
+		  				aux.setAnterior(nodoNuevo);
+		  				longitud++;
+		  				nombreUltimaActivdad = nodoNuevo.getValorNodo().getNombre();
+		  				return true;
 					}else{
-						JOptionPane.showMessageDialog(null, "no puede ingresar actividades con el mismo nombre");
-						
+		  				//JOptionPane.showMessageDialog(null, "no puede ingresar actividades con el mismo nombre");
+						return false;
 					}
 
 					
 				}else{
 					
-					if(!verificarRepetido(actividad.getNombre())){
-						NodoDoble<Actividad> aux = nodo.getSiguiente();
-						nodo.setSiguiente(nodoNuevo);
-	                    nodoNuevo.setAnterior(nodo);
-	                    nodoNuevo.setSiguiente(aux);
-	                    aux.setAnterior(nodoNuevo);
-					}else{
-						JOptionPane.showMessageDialog(null, "no puede ingresar actividades con el mismo nombre");
+					if(nodo==fin){
 						
-					}
+						if(!verificarRepetido(actividad.getNombre())){
+							fin.setSiguiente(nodoNuevo);
+							nodoNuevo.setAnterior(fin);
+							fin=nodoNuevo;
+							longitud++;
+							nombreUltimaActivdad = nodoNuevo.getValorNodo().getNombre();
+							return true;
+						}else{
+							//JOptionPane.showMessageDialog(null, "no puede ingresar actividades con el mismo nombre");
+							return false;
+							
+						}
 
-					
-					 
+						
+					}else{
+						
+						if(!verificarRepetido(actividad.getNombre())){
+							NodoDoble<Actividad> aux = nodo.getSiguiente();
+							nodo.setSiguiente(nodoNuevo);
+		                    nodoNuevo.setAnterior(nodo);
+		                    nodoNuevo.setSiguiente(aux);
+		                    aux.setAnterior(nodoNuevo);
+		        			longitud++;
+		        			nombreUltimaActivdad = nodoNuevo.getValorNodo().getNombre();
+		                    return true;
+						}else{
+							//JOptionPane.showMessageDialog(null, "no puede ingresar actividades con el mismo nombre");
+							return false;
+							
+						}
+
+						
+						 
+					}
 				}
 			}
-			longitud++;
-			nombreUltimaActivdad = nodoNuevo.getValorNodo().getNombre();
+		
 		}else{
-			JOptionPane.showMessageDialog(null, "actividad no existe");
+			//JOptionPane.showMessageDialog(null, "actividad no existe");
+			return false;
 			
 		}
 		
 	}
 
 	/**
-	 *  METODO PARA BUSCAR Y RETORNAR UN NODO-ACTIVIDAD DADO SU NOMBRE
+	 * metodo para buscar y retornar un nodo-actividad dado su nombre
 	 * @param nombre
 	 * @return
 	 */
@@ -157,7 +192,7 @@ public class ListaActividad implements IListaActividadService, Serializable{
 	}
 	
 	/**
-	 *  METODO PARA BUSCAR Y RETORNAR UNA ACRTIVIDAD DADO SU NOMBRE	
+	 * metodo para buscar y retornar una actividad dado su nombre	
 	 * @param nombre
 	 * @return 
 	 */
@@ -181,8 +216,10 @@ public class ListaActividad implements IListaActividadService, Serializable{
 		return actividad;
 	}
 	
+	/**
+	 * metodo para eliminar una actividad dado su nombre
+	 */
 	@Override
-	/// cambiarlo despues 
 	public void eliminar(String nombre) {
 		
 		NodoDoble<Actividad> nodo = buscarNodoActividad(nombre);
@@ -215,11 +252,15 @@ public class ListaActividad implements IListaActividadService, Serializable{
 		}
 	}
 
+	/**
+	 * metodo para insertar una activadad al final
+	 * @return 
+	 */
 	@Override
-	public void insertarFinal(Actividad actividad) {
+	public boolean insertarFinal(Actividad actividad) {
 		
 		if (cabeza == null) {
-			insertarInicio(actividad);
+			return insertarInicio(actividad);
 		} else {
 
 			if(!verificarRepetido(actividad.getNombre())){
@@ -229,8 +270,12 @@ public class ListaActividad implements IListaActividadService, Serializable{
 	            fin = nodo;
 				nombreUltimaActivdad = nodo.getValorNodo().getNombre();
 				 longitud++;
+				
+				 return true;
 			}else{
-				JOptionPane.showMessageDialog(null, "no puede ingresar actividades con el mismo nombre");
+				//JOptionPane.showMessageDialog(null, "no puede ingresar actividades con el mismo nombre");
+				return false;
+				
 			}
 
 
@@ -239,19 +284,28 @@ public class ListaActividad implements IListaActividadService, Serializable{
 		
 	}
 	
+	/**
+	 * metodo para insertar una actividad despues de la ultima creada
+	 * @return 
+	 */
 	@Override
-	public void insertarDespuesUltimaActividadInsertada(Actividad actividad){
+	public boolean insertarDespuesUltimaActividadInsertada(Actividad actividad){
 		System.out.println(nombreUltimaActivdad);
 		NodoDoble<Actividad> nodo = buscarNodoActividad(nombreUltimaActivdad);
 		if(nodo!=null){
 			
-			 insertarPosDeterminada(actividad, nombreUltimaActivdad);
+			 return insertarPosDeterminada(actividad, nombreUltimaActivdad);
 			
 		}else{
-			JOptionPane.showMessageDialog(null, "aun no se crean actividades");
+			//JOptionPane.showMessageDialog(null, "aun no se crean actividades");
+			return false;
 		}
 	}
 
+	/**
+	 * metodo para obtener el tiempo de todas las actividades
+	 * @return
+	 */
 	public int tiempoTodasActividades(){
 	
 		int tiempo=0;
@@ -264,18 +318,17 @@ public class ListaActividad implements IListaActividadService, Serializable{
 	}
 	
 
+	/**
+	 * metodo para mostrar todas las actividades
+	 */
 	public String mostrarActividades(){
 		String datos ="";
 		NodoDoble<Actividad> puntero = cabeza;
         
-//		if(puntero ==fin ){
-//			datos+=puntero.getActividad().toString()+"\n";
-//		}else{
 			while(puntero!=null){
 				datos+=puntero.getValorNodo().toString()+"\n";
 				puntero=puntero.getSiguiente();
 			}
-		//}
 		return datos;
 	}
 	
@@ -283,6 +336,11 @@ public class ListaActividad implements IListaActividadService, Serializable{
 		return this.cabeza;
 	}
 	
+	/**
+	 * metodo para cambiar 2 actividades con sus tareas
+	 * @param nombreActividad
+	 * @param actividad
+	 */
 	public void cambiarActividadesConTareas(String nombreActividad, Actividad actividad){
 		
 		NodoDoble<Actividad> actividadModificar = buscarNodoActividad(nombreActividad);
@@ -302,6 +360,11 @@ public class ListaActividad implements IListaActividadService, Serializable{
 		
 	}
 	
+	/**
+	 * metodo para cambiar 2 actividades sin sus tareas
+	 * @param actividad1
+	 * @param actividad2
+	 */
 	public void cambiarActividadesSinTareas(Actividad actividad1, Actividad actividad2){
 		
 		String nombreAct1 = actividad1.getNombre();
@@ -322,8 +385,12 @@ public class ListaActividad implements IListaActividadService, Serializable{
 		
 	}
 	
-	public double calcularTiempoMinActividades (){
-		double tiempoMinActividades =0;
+	/**
+	 * metodo para calcular el tiempo minimo de todas las actividades
+	 * @return
+	 */
+	public int calcularTiempoMinActividades (){
+		int tiempoMinActividades =0;
 		NodoDoble<Actividad> puntero = cabeza;
 		while(puntero!=null){
 			tiempoMinActividades+=puntero.getValorNodo().getTiempoMin();
@@ -332,8 +399,12 @@ public class ListaActividad implements IListaActividadService, Serializable{
 		return tiempoMinActividades;
 	}
 	
-	public double calcularTiempoMaxActividades (){
-		double tiempoMaxActividades =0;
+	/**
+	 * metodo para calcular el tiempo maximo de todas las actividades
+	 * @return
+	 */
+	public int calcularTiempoMaxActividades (){
+		int tiempoMaxActividades =0;
 		NodoDoble<Actividad> puntero = cabeza;
 		while(puntero!=null){
 			tiempoMaxActividades+=puntero.getValorNodo().getTiempoMax();
@@ -342,8 +413,13 @@ public class ListaActividad implements IListaActividadService, Serializable{
 		return tiempoMaxActividades;
 	}
 	
+	/**
+	 * metodo para buscar una tareas desde el inicio 
+	 * @param descripcion
+	 * @return
+	 */
 	public Tarea buscarTareaInicio(String descripcion){
-		numVecesTareaEnActividad=0;
+		
 		NodoDoble<Actividad> puntero = cabeza;
 		Tarea encontrada = null;
 		while(puntero!=null){
@@ -355,27 +431,39 @@ public class ListaActividad implements IListaActividadService, Serializable{
 			}
 			puntero=puntero.getSiguiente();
 		}
-		System.out.println("las veces que esta en actividades es: "+numVecesTareaEnActividad);
+		
 		return encontrada;
 	}
 	
+	/**
+	 * metodo par buscar una tarea dada su descripcion
+	 * @param nombreActividad
+	 * @param descripcionTarea
+	 * @return
+	 */
 	public Tarea buscarTareaNombreDado(String nombreActividad, String descripcionTarea){
-		numVecesTareaEnActividad=0;
+		
 		NodoDoble<Actividad> puntero = buscarNodoActividad(nombreActividad);
 		Tarea encontrada = null;
 		while(puntero!=null){
 			Tarea t = puntero.getValorNodo().getConjuntoTareas().buscarTarea(descripcionTarea);
+			
 			if(t!=null){
 				encontrada=t;
 				numVecesTareaEnActividad++;
 			}
 			puntero=puntero.getSiguiente();
 		}
-		System.out.println("las veces que esta en actividades es: "+numVecesTareaEnActividad);
+
 		return encontrada;
 	}
+	/**
+	 * metodo para buscar la ultima tarea creada
+	 * @param descrp
+	 * @return
+	 */
 	public Tarea buscarTareaActual(String descrp){
-		numVecesTareaEnActividad=0;
+		
 		NodoDoble<Actividad> puntero = buscarNodoActividad(nombreUltimaActivdad);
 		Tarea encontrada = null;
 		while(puntero!=null){
@@ -386,7 +474,6 @@ public class ListaActividad implements IListaActividadService, Serializable{
 			}
 			puntero=puntero.getSiguiente();
 		}
-		System.out.println("las veces que esta en actividades es: "+numVecesTareaEnActividad);
 		return encontrada;
 		
 	}

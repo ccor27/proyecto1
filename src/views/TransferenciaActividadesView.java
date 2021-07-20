@@ -7,6 +7,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
+
+import javax.swing.JOptionPane;
+
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -30,7 +33,7 @@ public class TransferenciaActividadesView {
 
 	TransferenciaActividadesViewController transferenciaController = new TransferenciaActividadesViewController();
 	private ListaProceso lista= transferenciaController.getListaProceso();
-	protected Shell shell;
+	protected Shell shlTrasferenciaDeActividades;
 	private String nombreProcesoUno,nombreProcesoDos;
 	private int indexTablaUno,indexTablaDos;
 	private String nombreActividadUno;
@@ -41,6 +44,7 @@ public class TransferenciaActividadesView {
 	private Table tblProceso2;
 	private Combo comboBoxProceso2;
 	private Combo comboBoxProceso1;
+	private Button btnNo;
 	/**
 	 * Launch the application.
 	 * @param args
@@ -60,10 +64,10 @@ public class TransferenciaActividadesView {
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
-		shell.open();
-		shell.layout();
+		shlTrasferenciaDeActividades.open();
+		shlTrasferenciaDeActividades.layout();
 		cargarDatosComboBox();
-		while (!shell.isDisposed()) {
+		while (!shlTrasferenciaDeActividades.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -74,11 +78,11 @@ public class TransferenciaActividadesView {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shell = new Shell();
-		shell.setSize(494, 925);
-		shell.setText("SWT Application");
+		shlTrasferenciaDeActividades = new Shell();
+		shlTrasferenciaDeActividades.setSize(920, 518);
+		shlTrasferenciaDeActividades.setText("Trasferencia de actividades");
 		
-		Group grpProcesoUno = new Group(shell, SWT.NONE);
+		Group grpProcesoUno = new Group(shlTrasferenciaDeActividades, SWT.NONE);
 		grpProcesoUno.setText("Proceso Uno");
 		grpProcesoUno.setBounds(10, 10, 429, 352);
 		
@@ -117,9 +121,9 @@ public class TransferenciaActividadesView {
 		 });
 		comboBoxProceso1.setBounds(137, 32, 170, 23);
 		
-		Group grpProcesoDos = new Group(shell, SWT.NONE);
+		Group grpProcesoDos = new Group(shlTrasferenciaDeActividades, SWT.NONE);
 		grpProcesoDos.setText("Proceso Dos");
-		grpProcesoDos.setBounds(21, 442, 429, 352);
+		grpProcesoDos.setBounds(465, 10, 429, 352);
 		
 		Label lblSeleccionarProceso_1 = new Label(grpProcesoDos, SWT.NONE);
 		lblSeleccionarProceso_1.setText("Seleccionar Proceso:");
@@ -156,55 +160,119 @@ public class TransferenciaActividadesView {
 		});
 		comboBoxProceso2.setBounds(135, 32, 169, 23);
 		
-		Label lblTransferirConTareas = new Label(shell, SWT.NONE);
-		lblTransferirConTareas.setBounds(21, 391, 119, 15);
+		Label lblTransferirConTareas = new Label(shlTrasferenciaDeActividades, SWT.NONE);
+		lblTransferirConTareas.setBounds(290, 387, 119, 15);
 		lblTransferirConTareas.setText("Transferir con tareas:");
 		
-		btnSi = new Button(shell, SWT.RADIO);
-		btnSi.setBounds(152, 390, 40, 16);
+		btnSi = new Button(shlTrasferenciaDeActividades, SWT.RADIO);
+		btnSi.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+		btnSi.setBounds(421, 386, 40, 16);
 		btnSi.setText("Si");
 		
-		Button btnNo = new Button(shell, SWT.RADIO);
-		btnNo.setBounds(219, 390, 54, 16);
+		btnNo = new Button(shlTrasferenciaDeActividades, SWT.RADIO);
+		btnNo.setBounds(488, 386, 54, 16);
 		btnNo.setText("No");
 		
-		Button btnTransferir = new Button(shell, SWT.NONE);
+		Button btnTransferir = new Button(shlTrasferenciaDeActividades, SWT.NONE);
 		btnTransferir.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+
+		if(comboBoxProceso1.getText().equalsIgnoreCase("") || comboBoxProceso2.getText().equalsIgnoreCase("")){
+			JOptionPane.showMessageDialog(null, "Debe seleccionar los procesos");
+		}else{
+			int indicetblProce1 = tblProceso1.getSelectionIndex();
+			int indicetblProce2 = tblProceso2.getSelectionIndex();
+			if(indicetblProce1>=0 && indicetblProce2>=0){
 				
-				int indicetblProce1 = tblProceso1.getSelectionIndex();
 				nombreActividadUno = tblProceso1.getItem(indicetblProce1).getText();
-				int indicetblProce2 = tblProceso2.getSelectionIndex();
 				NombreActividadDos = tblProceso2.getItem(indicetblProce2).getText();
 				
-				if(nombreActividadUno.equalsIgnoreCase("")||NombreActividadDos.equalsIgnoreCase("")){
-					System.out.println("debe seleccionar una actividad por tarea");
+				if(btnSi.getSelection() || btnNo.getSelection()){
+					if(nombreActividadUno.equalsIgnoreCase("")||NombreActividadDos.equalsIgnoreCase("")){
+						
+						System.out.println("debe seleccionar una actividad por tarea");
+						
+					}else{
+						
+						if(btnSi.getSelection()){
+							transferenciaController.interCambiarActividades(nombreProcesoUno, nombreProcesoDos, nombreActividadUno, 
+									NombreActividadDos, true );
+							
+							        cargarDatosTablaProceso1(nombreProcesoUno);
+							        cargarDatosTablaProceso2(nombreProcesoDos);
+							        btnSi.setSelection(false);
+							        btnNo.setSelection(false);
+							        
+						}else{
+							transferenciaController.interCambiarActividades(nombreProcesoUno, nombreProcesoDos, nombreActividadUno, 
+									NombreActividadDos, false );
+							
+							        cargarDatosTablaProceso1(nombreProcesoUno);
+							        cargarDatosTablaProceso2(nombreProcesoDos);
+							        btnSi.setSelection(false);
+							        btnNo.setSelection(false);
+							        
+						}
+
+					}
 				}else{
 					
-					transferenciaController.interCambiarActividades(nombreProcesoUno, nombreProcesoDos, nombreActividadUno, 
-							NombreActividadDos, btnSi.getSelection() );
-					
-					cargarDatosTablaProceso1(nombreProcesoUno);
-					cargarDatosTablaProceso2(nombreProcesoDos);
+					JOptionPane.showMessageDialog(null, "debe seleccionar si se trasfiere con o sin tareas.");
 				}
+			}else{
+				 JOptionPane.showMessageDialog(null, "debe seleccionar una actividad de cada tabla");
+			}
+			
+		}
+//				
+//				
+//				
+//				
+//				
+//				if(nombreActividadUno.equalsIgnoreCase("")||NombreActividadDos.equalsIgnoreCase("")){
+//					
+//				}else{
+//					
+//					transferenciaController.interCambiarActividades(nombreProcesoUno, nombreProcesoDos, nombreActividadUno, 
+//							NombreActividadDos, btnSi.getSelection() );
+//					
+//					cargarDatosTablaProceso1(nombreProcesoUno);
+//					cargarDatosTablaProceso2(nombreProcesoDos);
+//				}
 
 			}
 		});
-		btnTransferir.setBounds(301, 381, 75, 25);
+		btnTransferir.setBounds(343, 420, 75, 25);
 		btnTransferir.setText("Transferir");
 		
-		Button btnAtras = new Button(shell, SWT.NONE);
+		Button btnAtras = new Button(shlTrasferenciaDeActividades, SWT.NONE);
 		btnAtras.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				PrincipalView principalView = new PrincipalView();
-				shell.close();
+				shlTrasferenciaDeActividades.close();
 				principalView.open();
 			}
 		});
 		btnAtras.setBounds(169, 833, 75, 25);
 		btnAtras.setText("Atras");
+		
+		Button btnAtras_1 = new Button(shlTrasferenciaDeActividades, SWT.NONE);
+		btnAtras_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				PrincipalView principalView = new PrincipalView();
+				shlTrasferenciaDeActividades.close();
+				principalView.open();
+			}
+		});
+		btnAtras_1.setBounds(482, 420, 75, 25);
+		btnAtras_1.setText("Atras");
 
 	}
 	public void cargarDatosComboBox(){
@@ -265,20 +333,4 @@ public class TransferenciaActividadesView {
 		}
 
 	}
-//		tblProceso2.removeAll();
-//		Proceso proceso = lista.obtenerProceso(nombre);
-//		if(proceso!=null){
-//			ListaActividad listaActividad = proceso.getConjuntoActividades();
-//			NodoDoble<Actividad> puntero = listaActividad.getCabeza();
-//			while(puntero!=null){
-//				Actividad act = puntero.getValorNodo();
-//				TableItem item = new TableItem(tblProceso2, SWT.NONE);
-//				item.setText(new String[] {act.getNombre(),act.getDescripcion(),String.valueOf(act.getEsObligatorio()),
-//						String.valueOf(act.getTiempo())});
-//				puntero=puntero.getSiguiente();
-//			}
-//		}else{
-//			System.out.println("no hay procesos");
-//		}
-//	}
 }

@@ -88,9 +88,9 @@ public class ConsultarProcesoView {
 		btnConsultar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				double tiempoMin=procesoViewController.calcularTiempoMin(nombreProceso);
-				double tiempoMax=procesoViewController.calcularTiempoMax(nombreProceso);
-				textTiempos.setText("Tiempo Minimo: "+String.valueOf(tiempoMin)+ "\n" +"Tiempo Maximo: "+ String.valueOf(tiempoMax));
+				int tiempoMin=procesoViewController.calcularTiempoMin(nombreProceso);
+				int tiempoMax=procesoViewController.calcularTiempoMax(nombreProceso);
+				textTiempos.setText("Tiempo Minimo: "+String.valueOf(tiempoMin)+" minutos"+ "\n" +"Tiempo Maximo: "+ String.valueOf(tiempoMax)+" minutos");
 				
 			}
 		});

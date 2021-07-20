@@ -4,9 +4,9 @@ import modelo.Actividad;
 
 public interface IListaActividadService {
 
-	void insertarInicio(Actividad actividad);
-	void insertarFinal(Actividad actividad);
-	void insertarPosDeterminada(Actividad actividad, String nombre);
-	void insertarDespuesUltimaActividadInsertada(Actividad actividad);
+	boolean insertarInicio(Actividad actividad);
+	boolean insertarFinal(Actividad actividad);
+	boolean insertarPosDeterminada(Actividad actividad, String nombre);
+	boolean insertarDespuesUltimaActividadInsertada(Actividad actividad);
 	void eliminar(String nombre);
 }
