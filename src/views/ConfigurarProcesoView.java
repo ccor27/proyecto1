@@ -82,7 +82,7 @@ public class ConfigurarProcesoView {
 	 */
 	protected void createContents() {
 		shlConfigurarProcesos = new Shell();
-		shlConfigurarProcesos.setSize(799, 850);
+		shlConfigurarProcesos.setSize(750, 700);
 		shlConfigurarProcesos.setText("Configurar  Procesos");
 		
 		comboBoxProcesos = new Combo(shlConfigurarProcesos, SWT.NONE);
@@ -109,7 +109,7 @@ public class ConfigurarProcesoView {
 				principalView.open();
 			}
 		});
-		btnAtras.setBounds(474, 693, 117, 25);
+		btnAtras.setBounds(365, 607, 168, 25);
 		btnAtras.setText("Atras");
 		
 		Button btnCrearActividad = new Button(shlConfigurarProcesos, SWT.NONE);
@@ -119,7 +119,7 @@ public class ConfigurarProcesoView {
 
 				if(!comboBoxProcesos.getText().equalsIgnoreCase("")){
 					String nombreProceso = comboBoxProcesos.getText();
-					CrearActividadView crearActividadView = new CrearActividadView();
+					CrearActividadYTareaView crearActividadView = new CrearActividadYTareaView();
 					crearActividadView.setValores(nombreProceso, lista);
 					shlConfigurarProcesos.close();
 					crearActividadView.open();
@@ -131,16 +131,12 @@ public class ConfigurarProcesoView {
 				}
 			}
 		});
-		btnCrearActividad.setBounds(105, 693, 117, 25);
-		btnCrearActividad.setText("Crear actividad");
-		
-		Button btnCrearTarea = new Button(shlConfigurarProcesos, SWT.NONE);
-		btnCrearTarea.setBounds(312, 693, 75, 25);
-		btnCrearTarea.setText("Crear tarea");
+		btnCrearActividad.setBounds(153, 607, 168, 25);
+		btnCrearActividad.setText("Crear actividad o tarea");
 		
 		Group grpListaActividad = new Group(shlConfigurarProcesos, SWT.NONE);
 		grpListaActividad.setText("Lista actividad");
-		grpListaActividad.setBounds(10, 85, 724, 292);
+		grpListaActividad.setBounds(10, 85, 724, 246);
 		
 		
 		TableViewer tableViewer = new TableViewer(grpListaActividad, SWT.BORDER | SWT.FULL_SELECTION);
@@ -148,17 +144,17 @@ public class ConfigurarProcesoView {
 		tblActividades.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				tblTareas.removeAll();
+				
 				int a = tblActividades.getSelectionIndex();
-				System.out.println(a);
+				//System.out.println(a);
 				String c = tblActividades.getItem(a).getText();
-				System.out.println(c);
+				//System.out.println(c);
 				String nombreProceso = comboBoxProcesos.getText();
 				Actividad act = lista.obtenerProceso(nombreProceso).getConjuntoActividades().buscarActividad(c);
 				cargarDatosTablaTarea(act);
 			}
 		});
-		tblActividades.setBounds(10, 21, 704, 261);
+		tblActividades.setBounds(10, 21, 704, 217);
 		tblActividades.setLinesVisible(true);
 		tblActividades.setHeaderVisible(true);
 		
@@ -179,7 +175,7 @@ public class ConfigurarProcesoView {
 		
 		Group grpListaTarea = new Group(shlConfigurarProcesos, SWT.NONE);
 		grpListaTarea.setText("Lista tarea");
-		grpListaTarea.setBounds(10, 398, 724, 239);
+		grpListaTarea.setBounds(10, 348, 724, 239);
 		
 		TableViewer tableViewer_1 = new TableViewer(grpListaTarea, SWT.BORDER | SWT.FULL_SELECTION);
 		tblTareas = tableViewer_1.getTable();
@@ -220,6 +216,7 @@ public class ConfigurarProcesoView {
 	
 	public void cargarDatosTablaActivida(String nombre){
 		
+		tblActividades.removeAll();
 		Proceso proceso = lista.obtenerProceso(nombre);
 		if(proceso!=null){
 			ListaActividad listaActividad = proceso.getConjuntoActividades();
@@ -236,11 +233,13 @@ public class ConfigurarProcesoView {
 	}
 	
 	public void cargarDatosTablaTarea(Actividad act){
+		tblTareas.removeAll();
 		ColaTarea cola = act.getConjuntoTareas();
-		Nodo<Tarea> puntero = cola.obtenerInicio();
+		Nodo<Tarea> puntero = cola.getInicio();
 		while(puntero!=null){
 			Tarea t = puntero.getValorNodo();
 			TableItem item = new TableItem(tblTareas, SWT.NONE);
+			
 			item.setText(new String[] {t.getDescripcion(),String.valueOf(t.getEsObligatorio()),t.getTiempoMax()+"",t.getTiempoMin()+""});
 			puntero=puntero.getSiguiente();
 		}

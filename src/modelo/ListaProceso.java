@@ -1,7 +1,13 @@
 package modelo;
 
-public class ListaProceso {
+import java.io.Serializable;
 
+public class ListaProceso implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Nodo<Proceso> inicio;
 	private int longitud;
 	private int tiempoProceso;
@@ -16,7 +22,11 @@ public class ListaProceso {
 	public ListaProceso(){
 		
 	}
-	
+
+	/**
+	 * metodo para insertar un proceso 
+	 * @param proceso
+	 */
 	public void insertarProceso(Proceso proceso){
 		
 		Nodo<Proceso> nodo = new Nodo<Proceso>(proceso); 
@@ -33,6 +43,10 @@ public class ListaProceso {
 		longitud++;
 	}
 	
+	/**
+	 * metodo para calcular el tiempo de todos los procesos
+	 * @return
+	 */
 	public int calcularTiempoProceso(){
 	
 		Nodo<Proceso> puntero = inicio;
@@ -49,6 +63,11 @@ public class ListaProceso {
 		
 	}
 	
+	/**
+	 * metodo para obtener un proceso dado su nombre
+	 * @param nombre
+	 * @return
+	 */
 	public Proceso obtenerProceso(String nombre){
 		
 		Nodo<Proceso> puntero = inicio;
@@ -62,7 +81,9 @@ public class ListaProceso {
 		return proceso;
 	}
 	
-	
+	/**
+	 * metodo para mostrar un proceso
+	 */
 	public void mostrarProcesos(){
 		String datos ="";
 		Nodo<Proceso> puntero = inicio;
@@ -73,13 +94,14 @@ public class ListaProceso {
 		System.out.println(datos);
 	}
 	
-	public Nodo<Proceso> getInicio(){
-		return this.inicio;
-	}
-	public int obtenerCantidadProcesos(){
-		return longitud;
-	}
-	
+	/**
+	 * metodo para intercambiar actividades con o sin tareas
+	 * @param nombreProceso1
+	 * @param nombreProceso2
+	 * @param nombreActividad1
+	 * @param nombreActividad2
+	 * @param cambiarConTareas
+	 */
 	public void intercambiarActividades(String nombreProceso1,String nombreProceso2,String nombreActividad1,String nombreActividad2, boolean cambiarConTareas){
 		
 		Proceso p1 = obtenerProceso(nombreProceso1);
@@ -104,8 +126,7 @@ public class ListaProceso {
 					p1.getConjuntoActividades().cambiarActividadesConTareas(nombreActividad1, act2);
 					p2.getConjuntoActividades().cambiarActividadesConTareas(nombreActividad2, act1);
 				}else{
-					p1.getConjuntoActividades().cambiarActividadesSinTareas(nombreActividad1, act2);
-					p2.getConjuntoActividades().cambiarActividadesSinTareas(nombreActividad2, act1);
+					p1.getConjuntoActividades().cambiarActividadesSinTareas(act1, act2);
 				}
 			}
 		}
@@ -113,8 +134,12 @@ public class ListaProceso {
 	
 	
 	
-	public double calcularTiempoMin(String nombreProceso) {
-		// TODO Auto-generated method stub
+	/**
+	 * metodo para obtener el tiempo minimo de un proceso
+	 * @param nombreProceso
+	 * @return
+	 */
+	public int calcularTiempoMin(String nombreProceso) {
 		Proceso p = obtenerProceso(nombreProceso);
 		
 		if(p==null){
@@ -125,8 +150,13 @@ public class ListaProceso {
 		}
 		
 	}
-	public double calcularTiempoMax(String nombreProceso) {
-		// TODO Auto-generated method stub
+	
+	/**
+	 * metodo para obtener el tiempo maximo de un proceso
+	 * @param nombreProceso
+	 * @return
+	 */
+	public int calcularTiempoMax(String nombreProceso) {
 		Proceso p = obtenerProceso(nombreProceso);
 		
 		if(p==null){
@@ -137,8 +167,60 @@ public class ListaProceso {
 		}
 	}
 	
+	/**
+	 * metodo para buscar una tarea desde el inicio de un proceso
+	 * @param nombreProceso
+	 * @param descripcion
+	 * @return
+	 */
+	public Tarea buscarTareaDesdeInicio(String nombreProceso,String descripcion){
+		
+		Proceso proceso = obtenerProceso(nombreProceso);
+		return proceso.getConjuntoActividades().buscarTareaInicio(descripcion);
+	}
 	
+	/**
+	 * metodo para calcular cuantas veces esta una actividad en los procesos
+	 * @param nombreAct
+	 * @return
+	 */
+	public String vecesActEnProcesos(String nombreAct){
+		String procesos = "";
+		Nodo<Proceso> puntero = inicio;
+		while(puntero!=null){
+			
+	    if(puntero.getValorNodo().getConjuntoActividades().buscarActividad(nombreAct)!=null){
+	    	procesos += puntero.getValorNodo().getNombre()+"\n";
+	       }
+	    puntero=puntero.getSiguiente();
+		}
+		return procesos;
+	}
 	
+	public Nodo<Proceso> getInicio(){
+		return this.inicio;
+	}
+	public int getLongitud(){
+		return this.longitud;
+	}
+	public void setLongitud(int longitud) {
+		this.longitud = longitud;
+	}
+	public int getTiempoProceso() {
+		return tiempoProceso;
+	}
+	public void setTiempoProceso(int tiempoProceso) {
+		this.tiempoProceso = tiempoProceso;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public void setInicio(Nodo<Proceso> inicio) {
+		this.inicio = inicio;
+	}
 	
 	
 }

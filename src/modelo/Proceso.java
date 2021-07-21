@@ -1,18 +1,24 @@
 package modelo;
 
-public class Proceso {
+import java.io.Serializable;
 
+public class Proceso implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String nombre;
 	private ListaActividad conjuntoActividades;
-	private double tiempo;
-	private double tiempoMin;
-	private double tiempoMax;
+	private int tiempo;
+	private int tiempoMin;
+	private int tiempoMax;
 	
 	public Proceso(){
 		
 	}
-	public Proceso(int id, String nombre, double tiempoMin, double tiempoMax){
+	public Proceso(int id, String nombre, int tiempoMin, int tiempoMax){
 		this.id = id;
 		this.nombre = nombre;
 		this.tiempoMin = tiempoMin;
@@ -47,21 +53,21 @@ public class Proceso {
 		tiempo = conjuntoActividades.tiempoTodasActividades();
 		return tiempo;
 	}
-	public void setTiempo(double tiempo) {
+	public void setTiempo(int tiempo) {
 		this.tiempo = tiempo;
 	}
-	public double getTiempoMin() {
+	public int getTiempoMin() {
 		tiempoMin = conjuntoActividades.calcularTiempoMinActividades();
 		return tiempoMin;
 	}
-	public void setTiempoMin(double tiempoMin) {
+	public void setTiempoMin(int tiempoMin) {
 		this.tiempoMin = tiempoMin;
 	}
-	public double getTiempoMax() {
+	public int getTiempoMax() {
 		tiempoMax = conjuntoActividades.calcularTiempoMaxActividades();
 		return tiempoMax;
 	}
-	public void setTiempoMax(double tiempoMax) {
+	public void setTiempoMax(int tiempoMax) {
 		this.tiempoMax = tiempoMax;
 	}
 	@Override

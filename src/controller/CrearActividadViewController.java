@@ -12,18 +12,18 @@ public class CrearActividadViewController {
 		listaProceso= modelFactoryController.getLista(); 
 	}
 
-	public void crearDespuesUltimaActividadCreada(String nombreProceso, String nombre, String descripcion, boolean b) {
-		modelFactoryController.crearDespuesUltimaActividadCreada(nombreProceso, nombre, descripcion, b);
+	public boolean crearDespuesUltimaActividadCreada(String nombreProceso, String nombre, String descripcion, boolean b) {
+		return modelFactoryController.crearDespuesUltimaActividadCreada(nombreProceso, nombre, descripcion, b);
 	}
 
-	public void crearActividadFin(String nombreProceso, String nombre, String descripcion, boolean b) {
-		modelFactoryController.crearActividadFin(nombreProceso, nombre, descripcion, b);
+	public boolean crearActividadFin(String nombreProceso, String nombre, String descripcion, boolean b) {
+		return modelFactoryController.crearActividadFin(nombreProceso, nombre, descripcion, b);
 		
 	}
 
-	public void crearActividadPosicionDeterminada(String nombreProceso, String nombreActividadPrecede, String nombre,
+	public boolean crearActividadPosicionDeterminada(String nombreProceso, String nombreActividadPrecede, String nombre,
 			String descripcion, boolean b) {
-	  modelFactoryController.crearActividadPosicionDeterminada(nombreProceso, nombreActividadPrecede, nombre, descripcion, b);
+	 return modelFactoryController.crearActividadPosicionDeterminada(nombreProceso, nombreActividadPrecede, nombre, descripcion, b);
 		
 	}
 
@@ -34,5 +34,18 @@ public class CrearActividadViewController {
 	public void setListaProceso(ListaProceso listaProceso) {
 		this.listaProceso = listaProceso;
 	}
+
+	public boolean crearTareaPosDeterminada(String nombreProceso, String nombreActividad, int indice, String descripcion, boolean esObligatorio,
+			int tiempoMax, int tiempoMin) {
+	return	modelFactoryController.crearTareaPosicionDeterminada(nombreProceso, nombreActividad, indice, descripcion, esObligatorio, tiempoMax, tiempoMin);
+		
+	}
+
+	public boolean creaeTareaFin(String nombreProceso, String nombreActividad, String descripcion, boolean esObligatorio, int tiempoMax, int tiempoMin) {
+		return modelFactoryController.crearTareaFin(nombreProceso, nombreActividad, descripcion, esObligatorio, tiempoMax, tiempoMin);
+		
+	}
+
+
 
 }

@@ -59,10 +59,12 @@ public class PrincipalView {
 		btnCrearProceso.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			 
+				CrearProcesoView procesoView = new CrearProcesoView();
+				shlPrincipal.close();
+				procesoView.open();
 			}
 		});
-		btnCrearProceso.setBounds(129, 138, 149, 25);
+		btnCrearProceso.setBounds(129, 60, 155, 36);
 		btnCrearProceso.setText("Crear proceso");
 		
 		Button btnConfigProceso = new Button(shlPrincipal, SWT.NONE);
@@ -75,7 +77,7 @@ public class PrincipalView {
 				c.open();
 			}
 		});
-		btnConfigProceso.setBounds(383, 138, 149, 25);
+		btnConfigProceso.setBounds(383, 60, 149, 36);
 		btnConfigProceso.setText("Confiurar proceso");
 		
 		Button btnConsultarTiempoProceso = new Button(shlPrincipal, SWT.NONE);
@@ -87,7 +89,7 @@ public class PrincipalView {
 				c.open();
 			}
 		});
-		btnConsultarTiempoProceso.setBounds(129, 202, 149, 36);
+		btnConsultarTiempoProceso.setBounds(129, 132, 155, 36);
 		btnConsultarTiempoProceso.setText("Consultar tiempo proceso");
 		
 		Button btnBuscarActividad = new Button(shlPrincipal, SWT.NONE);
@@ -100,21 +102,43 @@ public class PrincipalView {
 				
 			}
 		});
-		btnBuscarActividad.setBounds(383, 208, 149, 25);
+		btnBuscarActividad.setBounds(383, 138, 149, 30);
 		btnBuscarActividad.setText("Buscar actividad");
 		
 		Button btnBuscarTarea = new Button(shlPrincipal, SWT.NONE);
 		btnBuscarTarea.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+
+				BuscarTareasView buscarTareasView = new BuscarTareasView();
+				shlPrincipal.close();
+				buscarTareasView.open();
 			}
 		});
-		btnBuscarTarea.setBounds(129, 271, 149, 25);
+		btnBuscarTarea.setBounds(129, 207, 155, 36);
 		btnBuscarTarea.setText("Buscar Tarea");
 		
 		Button btnSalir = new Button(shlPrincipal, SWT.NONE);
-		btnSalir.setBounds(383, 271, 149, 25);
+		btnSalir.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				shlPrincipal.close();
+			}
+		});
+		btnSalir.setBounds(265, 335, 140, 30);
 		btnSalir.setText("Salir");
+		
+		Button btnTransferirActividades = new Button(shlPrincipal, SWT.NONE);
+		btnTransferirActividades.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TransferenciaActividadesView transferenciaActividadesView = new TransferenciaActividadesView();
+				shlPrincipal.close();
+				transferenciaActividadesView.open();
+			}
+		});
+		btnTransferirActividades.setBounds(383, 213, 149, 30);
+		btnTransferirActividades.setText("Transferir actividades");
 
 	}
 }
